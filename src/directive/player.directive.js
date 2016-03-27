@@ -7,7 +7,8 @@ playerApp.directive('player', function () {
       props: '='
     },
     link: function (scope) {
-
+      $(".nano").nanoScroller();
+      $(".nano").nanoScroller({ sliderMaxHeight: 10 });
     }
   };
 });
