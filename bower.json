@@ -1,0 +1,25 @@
+{
+  "name": "AngularStart",
+  "version": "0.0.0",
+  "homepage": "https://github.com/zidein07/AngularStart",
+  "authors": [
+    "zidein07 <zidein07@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "accounting.js": "~0.4.1",
+    "angular": "~1.4.8",
+    "angular-bootstrap": "~0.14.3",
+    "bootstrap": "~3.3.6",
+    "jquery": "~2.1.4",
+    "lodash": "~4.5.1"
+  }
+}
