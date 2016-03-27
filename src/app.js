@@ -1,8 +1,5 @@
 var playerApp = angular.module('playerApp', [
-  'ngRoute',
-  'pascalprecht.translate',
-  'ui.bootstrap',
-  'LocalStorageModule'
+  'ui.bootstrap'
 ]);
 
 //playerApp.run(function (localStorageService) {

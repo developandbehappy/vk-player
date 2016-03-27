@@ -2,16 +2,17 @@
 <html ng-app="playerApp" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Parse users Vk</title>
+    <title>PlayerVk</title>
     <link rel="shortcut icon" href="https://www.google.ru/favicon.ico"/>
     <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="vendor/angular-bootstrap/ui-bootstrap-csp.css">
-    <link rel="stylesheet" type="text/css" href="src/style/style.css"/>
+    <link rel="stylesheet" type="text/css" href="src/style/public.css"/>
 </head>
 <body>
 <div class="container">
     <div class="content">
-        <div ng-view></div>
+        <player></player>
     </div>
 </div>
 
@@ -21,20 +22,12 @@
 <script src="/vendor/bootstrap/dist/js/bootstrap.js"></script>
 <script src="/vendor/angular/angular.js"></script>
 <script src="/vendor/angular-bootstrap/ui-bootstrap.js"></script>
-<script src="/vendor/angular-translate/angular-translate.js"></script>
 <script src="/src/app.js"></script>
 <script src="/src/services/vkApi.service.js"></script>
 <script src="/src/services/vkResponse.service.js"></script>
-<script src="/src/services/fetchDataFromPost/vkFetchData.service.js"></script>
-<script src="/src/services/fetchDataFromPost/commentsData.service.js"></script>
-<script src="/src/services/fetchDataFromPost/likesData.service.js"></script>
-<script src="/src/services/fetchDataFromPost/repostsData.service.js"></script>
-<script src="/src/services/parseAndValidateVkLink.service.js"></script>
 <script src="/src/services/token.js"></script>
-<script src="/src/config/translate.js"></script>
-<script src="/src/config/config.js"></script>
-<script src="/src/controllers/homeCtrl.js"></script>
-<script src="/src/directive/translate-select.directive.js"></script>
+<script src="/src/controllers/playerCtrl.js"></script>
+<script src="/src/directive/player.directive.js"></script>
 <script src="/src/directive/wall-parser-info.directive.js"></script>
 <script src="/src/filter/accounting.filter.js"></script>
 </body>

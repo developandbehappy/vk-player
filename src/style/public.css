@@ -1,0 +1,129 @@
+#player {
+  width: 400px;
+  height: 320px;
+  background: url('http://hiphopgoldenage.com/wp-content/uploads/2015/08/eminem_color_touch_by_mizicko705-d3blvpd.jpg');
+  background-color: rgba(0, 0, 0, 0.95);
+  background-blend-mode: multiply;
+  background-size: cover;
+  background-position: center center;
+  border: 1px solid #bd9053;
+  overflow: hidden;
+  position: absolute;
+  margin: auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+#player .player-left-side {
+  height: 100%;
+  position: relative;
+  padding: 0;
+}
+#player .player-buttons {
+  position: absolute;
+  bottom: 60px;
+  margin: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+#player .player-buttons ul {
+  list-style: none;
+  padding: 0;
+}
+#player .player-buttons ul .player-btn {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #453339;
+  color: #f5b75b;
+  text-align: center;
+  line-height: 40px;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 1px #000;
+  cursor: pointer;
+}
+#player .player-buttons ul .player-btn.player-btn-forward {
+  right: 15px;
+}
+#player .player-buttons ul .player-btn.player-btn-backward {
+  left: 15px;
+}
+#player .player-buttons ul .player-btn.player-btn-middle {
+  width: 4em;
+  height: 4em;
+  line-height: 4em;
+  z-index: 1;
+}
+#player .player-buttons ul .player-btn:hover {
+  background: #36282d;
+  color: #f4ac43;
+}
+#player .player-logo-wrapper {
+  width: 410px;
+  height: 450px;
+  border-radius: 50%;
+  position: absolute;
+  left: -212px;
+  top: -250px;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #5d4c52 90%, #edb159 0);
+}
+#player .player-logo-wrapper .player-logo {
+  width: 99%;
+  height: 99%;
+  border-radius: 50%;
+  background-image: url('http://media.e-encuesta.com/images/363639.jpg');
+  background-repeat: no-repeat;
+  background-position: 150% 170%;
+}
+#player .players-status-bar {
+  position: absolute;
+  bottom: 5px;
+  width: 100%;
+  text-align: center;
+}
+#player .players-status-bar .players-current-audio {
+  text-shadow: 0 0 0 1px #000;
+}
+#player .players-status-bar .players-current-audio.players-audio-name {
+  color: #d49e56;
+}
+#player .players-status-bar .players-current-audio.players-audio-author {
+  color: #98d3c4;
+}
+#player .players-status-bar .players-current-audio.players-audio-duration {
+  color: #a9804d;
+}
+#player .player-right-side {
+  padding: 0;
+  height: 100%;
+}
+#player .players-audio-list {
+  border-left: 1px solid #574339;
+  height: 240px;
+  overflow: hidden;
+}
+#player .players-audio-list .players-audio-list-item {
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 20px 0;
+  line-height: 3px;
+  text-shadow: 0 1px #000;
+  cursor: pointer;
+}
+#player .players-audio-list .players-audio-list-item:hover {
+  background: #574339;
+}
+#player .players-audio-list .players-item-name {
+  color: #d49e56;
+  padding: 0 0 0 5px;
+}
+#player .players-audio-list .players-item-duration {
+  color: #98d3c4;
+  padding: 0;
+}

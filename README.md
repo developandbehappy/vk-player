@@ -1,1 +1,3 @@
-## vk player extension for chrome
+# Vk player extension for chrome
+#### design by Ellen Verleyen:  
+
