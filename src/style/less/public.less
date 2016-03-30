@@ -145,7 +145,7 @@
       line-height: 3px;
       text-shadow: 0 1px #000;
       cursor: pointer;
-      &:hover {
+      &:hover, &.players-audio-item-active  {
         background: #574339;
         border-left: 1px solid #d49e56;
         .players-item-name {
@@ -170,32 +170,34 @@
     .fa {
       color: #453339
     }
-    .player-volume-wrapper {
-      width: 150px;
-      height: 5px;
-      background: #33272e;
-      display: inline-block;
-      margin-left: 2px;
-      border-radius: 5px;
-      margin-bottom: 2.5px;
-      overflow: hidden;
-      box-shadow: 0 0 0 1px #000;
-      .player-volume-current {
-        width: 100px;
-        height: 100%;
-        background: #89664e;
-      }
-      .player-volume-character {
-        width: 10px;
-        height: 10px !important;
-        border-radius: 50%;
-        background: #f5b65a;
-        position: absolute;
-        box-shadow: 0 0 0 1px #000;
-        right: 65px;
-        bottom: 47.1px;
-        cursor: pointer;
-      }
-    }
+  }
+}
+
+.rangeslider--horizontal {
+  width: 150px;
+  height: 5px;
+  background: #33272e;
+  display: inline-block;
+  margin-left: 2px;
+  border-radius: 5px;
+  margin-bottom: 2.5px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px #000;
+  .rangeslider, .rangeslider__fill {
+    width: 100px;
+    height: 100%;
+    background: #89664e;
+  }
+  .rangeslider__handle {
+    width: 10px;
+    height: 10px !important;
+    border-radius: 50%;
+    background: #f5b65a;
+    position: absolute;
+    box-shadow: 0 0 0 1px #000;
+    //right: 65px;
+    bottom: 47.8px;
+    margin-left: 28px;
+    cursor: pointer;
   }
 }
