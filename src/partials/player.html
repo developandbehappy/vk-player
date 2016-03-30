@@ -5,16 +5,16 @@
         </div>
         <div class="player-buttons">
             <ul>
-                <li class="player-btn player-btn-backward"><i class="fa fa-step-backward"></i></li>
+                <li ng-click="nextPlay(false)" class="player-btn player-btn-backward"><i class="fa fa-step-backward"></i></li>
                 <li ng-click="pauseAndPlay()" class="player-btn player-btn-middle"><i
                         ng-class="{'fa fa-stop': curAudio.stop, 'fa fa-play': curAudio.pause, 'fa fa-pause': !curAudio.pause}"></i>
                 </li>
-                <li class="player-btn player-btn-forward"><i class="fa fa-step-forward"></i></li>
+                <li ng-click="nextPlay(true)" class="player-btn player-btn-forward"><i class="fa fa-step-forward"></i></li>
             </ul>
         </div>
         <div class="players-status-bar">
             <div class="players-current-audio players-audio-name" ng-bind="curAudio.name | limitTo:25"></div>
-            <div class="players-current-audio players-audio-author" ng-bind="curAudio.author"></div>
+            <div class="players-current-audio players-audio-author" ng-bind="curAudio.author | limitTo:25"></div>
             <div class="players-current-audio players-audio-duration"> {{ curAudio.cur_duration | secondsToDateTime |
                 date:'mm:ss' }} | {{ curAudio.duration | secondsToDateTime | date:'mm:ss' }}
             </div>
@@ -43,11 +43,15 @@
         <div class="player-setting-bar">
             <div class="player-volume">
                 <i class="fa fa-volume-up"></i>
-                <input ng-change="changeVolume()"
-                       min="0"
-                       max="1"
-                       step="0.05"
-                       ng-model="curAudio.volume" type="range" data-rangeslider="true">
+                <label>
+                    <input ng-change="changeVolume()"
+                           min="0"
+                           max="1"
+                           step="0.05"
+                           ng-model="curAudio.volume"
+                           type="range"
+                           data-rangeslider="true">
+                </label>
             </div>
             <!--
 

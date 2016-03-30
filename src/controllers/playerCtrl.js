@@ -1,4 +1,4 @@
-playerApp.controller('playerCtrl', function ($scope, $http) {
+playerApp.controller('playerCtrl', function ($scope, $http, $timeout) {
   $scope.dataAudio = '';
   var dataForUrlVk = {
     req: 'https://api.vk.com/method/',
@@ -10,8 +10,16 @@ playerApp.controller('playerCtrl', function ($scope, $http) {
 
   $http.jsonp(url).success(function (res) {
     $scope.dataAudio = res.response;
-    //var response = res.response;
-    //$scope.dataAudio = response;
-    //console.log('$scope.dataAudio', $scope.dataAudio);
+  }).finally(function () {
+    $timeout(function () {
+      $(".nano").nanoScroller();
+      $(".nano").nanoScroller({sliderMaxHeight: 10});
+      $('input[type="range"]').rangeslider({
+        polyfill: false,
+        onInit: function () {
+          $handle = $('.player-volume-character', this.$range);
+        }
+      });
+    }, 50);
   });
 });

@@ -10,6 +10,7 @@ playerApp.directive('player', function ($timeout, $interval) {
       var interval = '';
       var allAudio = [];
       var audioList = [];
+      var nextPlayStat = true;
 
       scope.curAudio = {
         name: '',
@@ -35,14 +36,12 @@ playerApp.directive('player', function ($timeout, $interval) {
             audioList = _.map(scope.props, function (item) {
               return item.url;
             });
+            addActiveClassItem(firstEl);
             var sound = new Howl({
               urls: audioList,
               autoplay: true,
               volume: scope.curAudio.volume
             });
-            scope.curAudio.name = firstEl.title;
-            scope.curAudio.author = firstEl.artist;
-            scope.curAudio.duration = firstEl.duration;
             interval = $interval(function () {
               scope.curAudio.cur_duration = Math.floor(sound.pos());
             }, 1000);
@@ -53,7 +52,6 @@ playerApp.directive('player', function ($timeout, $interval) {
 
       scope.changeVolume = function () {
         _.last(allAudio).volume(scope.curAudio.volume).play;
-        console.log('scope.curAudio.volume', scope.curAudio.volume);
       };
 
       scope.startAudio = function (audioItem) {
@@ -61,10 +59,8 @@ playerApp.directive('player', function ($timeout, $interval) {
         audioList = [audioItem.url];
         audioItem = addActiveClassItem(audioItem);
         if (!_.isEmpty(allAudio)) {
-          _.each(allAudio, function (item) {
-            item.stop().play;
-          });
-          $interval.cancel(interval);
+          stopAll();
+
           scope.curAudio.cur_duration = 0;
         }
         scope.curAudio.name = audioItem.title;
@@ -81,27 +77,66 @@ playerApp.directive('player', function ($timeout, $interval) {
         allAudio.push(sound);
       };
 
+      scope.nextPlay = function (status) {
+        if (!nextPlayStat) {
+          return false;
+        }
+        nextPlayStat = false;
+        var curPlay = _.last(allAudio);
+        var sizeProps = _.size(scope.props);
+        var indexSound = 0;
+
+        _.each(scope.props, function (item, index) {
+          if (item.url === curPlay._src) {
+            indexSound = index;
+          }
+        });
+        if (status) {
+          indexSound++;
+        } else {
+          indexSound--;
+        }
+        if (indexSound < 0) {
+          indexSound = sizeProps - 1;
+        }
+        if (indexSound > sizeProps - 1) {
+          indexSound = 0;
+        }
+        addActiveClassItem(scope.props[indexSound]);
+        var sound = new Howl({
+          urls: [scope.props[indexSound].url],
+          autoplay: true,
+          volume: scope.curAudio.volume
+        });
+        interval = $interval(function () {
+          scope.curAudio.cur_duration = Math.floor(sound.pos());
+        }, 1000);
+        allAudio.push(sound);
+        $timeout(function () {
+          nextPlayStat = true;
+        }, 400);
+      };
+
+
+      function stopAll() {
+        _.each(allAudio, function (item) {
+          item.stop().play;
+        });
+        $interval.cancel(interval);
+      }
+
       function addActiveClassItem(audioItem) {
+        stopAll();
+        scope.curAudio.name = audioItem.title;
+        scope.curAudio.author = audioItem.artist;
+        scope.curAudio.duration = audioItem.duration;
         scope.props = _.map(scope.props, function (item) {
           item.active = false;
           return item
         });
         audioItem.active = true;
-
         return audioItem;
       }
-
-      $timeout(function () {
-        $(".nano").nanoScroller();
-        $(".nano").nanoScroller({sliderMaxHeight: 10});
-      }, 1000);
-
-      $('input[type="range"]').rangeslider({
-        polyfill: false,
-        onInit: function () {
-          $handle = $('.player-volume-character', this.$range);
-        }
-      });
     }
   };
 });
