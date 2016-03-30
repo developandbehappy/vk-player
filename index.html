@@ -12,12 +12,13 @@
 </head>
 <body>
 <div class="container">
-    <div class="content">
-        <player></player>
+    <div ng-controller="playerCtrl" class="content">
+        <player props="dataAudio"></player>
     </div>
 </div>
 
 <script src="/vendor/lodash/lodash.js"></script>
+<script src="/vendor/howler.js/howler.min.js"></script>
 <script src="/vendor/accounting.js/accounting.js"></script>
 <script src="/vendor/jquery/dist/jquery.min.js"></script>
 <script src="/vendor/nanoscroller/bin/javascripts/jquery.nanoscroller.min.js"></script>
@@ -25,12 +26,11 @@
 <script src="/vendor/angular/angular.js"></script>
 <script src="/vendor/angular-bootstrap/ui-bootstrap.js"></script>
 <script src="/src/app.js"></script>
+<script src="/src/filter/secondsToDateTime.filter.js"></script>
 <script src="/src/services/vkApi.service.js"></script>
 <script src="/src/services/vkResponse.service.js"></script>
 <script src="/src/services/token.js"></script>
-<script src="/src/controllers/playerCtrl.js"></script>
 <script src="/src/directive/player.directive.js"></script>
-<script src="/src/directive/wall-parser-info.directive.js"></script>
-<script src="/src/filter/accounting.filter.js"></script>
+<script src="/src/controllers/playerCtrl.js"></script>
 </body>
 </html>

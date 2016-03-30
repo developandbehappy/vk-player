@@ -20,6 +20,7 @@
     "angular-bootstrap": "~0.14.3",
     "bootstrap": "~3.3.6",
     "font-awesome": "fontawesome#~4.5.0",
+    "howler.js": "~1.1.29",
     "jquery": "~2.1.4",
     "lodash": "~4.5.1",
     "nanoscroller": "~0.8.7"

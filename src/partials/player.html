@@ -20,33 +20,9 @@
         <div class="players-audio-list">
             <div class="player-list-scroller nano">
                 <div class="nano-content">
-                    <div class="players-audio-list-item">
-                        <div class="col-xs-10 players-item-name">Mark my words</div>
-                        <div class="col-xs-2 players-item-duration">2:14</div>
-                    </div>
-                    <div class="players-audio-list-item">
-                        <div class="col-xs-10 players-item-name">Mark my words</div>
-                        <div class="col-xs-2 players-item-duration">2:14</div>
-                    </div>
-                    <div class="players-audio-list-item">
-                        <div class="col-xs-10 players-item-name">Mark my words</div>
-                        <div class="col-xs-2 players-item-duration">2:14</div>
-                    </div>
-                    <div class="players-audio-list-item">
-                        <div class="col-xs-10 players-item-name">Mark my words</div>
-                        <div class="col-xs-2 players-item-duration">2:14</div>
-                    </div>
-                    <div class="players-audio-list-item">
-                        <div class="col-xs-10 players-item-name">Mark my words</div>
-                        <div class="col-xs-2 players-item-duration">2:14</div>
-                    </div>
-                    <div class="players-audio-list-item">
-                        <div class="col-xs-10 players-item-name">Mark my words</div>
-                        <div class="col-xs-2 players-item-duration">2:14</div>
-                    </div>
-                    <div class="players-audio-list-item">
-                        <div class="col-xs-10 players-item-name">Mark my words</div>
-                        <div class="col-xs-2 players-item-duration">2:14</div>
+                    <div class="players-audio-list-item" ng-repeat="itemAudio in props" ng-click="playAudio(itemAudio)">
+                        <div class="col-xs-10 players-item-name" ng-bind="itemAudio.title | limitTo:15"></div>
+                        <div class="col-xs-2 players-item-duration" ng-bind="itemAudio.duration | secondsToDateTime | date:'mm:ss'"></div>
                     </div>
                 </div>
                 <div class="nano-pane">

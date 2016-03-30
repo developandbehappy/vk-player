@@ -1,4 +1,4 @@
-playerApp.directive('player', function () {
+playerApp.directive('player', function ($timeout) {
   return {
     restrict: 'E',
     replace: true,
@@ -7,8 +7,25 @@ playerApp.directive('player', function () {
       props: '='
     },
     link: function (scope) {
-      $(".nano").nanoScroller();
-      $(".nano").nanoScroller({ sliderMaxHeight: 10 });
+      var allAudio = [];
+      scope.playAudio = function (audioItem) {
+        if (!_.isEmpty(allAudio)) {
+          _.each(allAudio, function (item) {
+            item.stop().play;
+          });
+        }
+        var sound = new Howl({
+          urls: [audioItem.url],
+          autoplay: true,
+          volume: 1
+        });
+        allAudio.push(sound);
+
+      };
+      $timeout(function () {
+        $(".nano").nanoScroller();
+        $(".nano").nanoScroller({sliderMaxHeight: 10});
+      }, 100)
     }
   };
 });
