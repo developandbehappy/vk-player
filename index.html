@@ -1,0 +1,37 @@
+<!doctype html>
+<html ng-app="playerApp" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PlayerVk</title>
+    <link rel="shortcut icon" href="https://www.google.ru/favicon.ico"/>
+    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="vendor/angular-bootstrap/ui-bootstrap-csp.css">
+    <link rel="stylesheet" href="vendor/nanoscroller/bin/css/nanoscroller.css">
+    <link rel="stylesheet" type="text/css" href="src/style/public.css"/>
+</head>
+<body>
+<div class="container">
+    <div ng-controller="playerCtrl" class="content">
+        <player props="dataAudio"></player>
+    </div>
+</div>
+
+<script src="/vendor/jquery/dist/jquery.min.js"></script>
+<script src="/vendor/rangeslider.js/dist/rangeslider.min.js"></script>
+<script src="/vendor/lodash/lodash.js"></script>
+<script src="/vendor/howler.js/howler.min.js"></script>
+<script src="/vendor/accounting.js/accounting.js"></script>
+<script src="/vendor/nanoscroller/bin/javascripts/jquery.nanoscroller.min.js"></script>
+<script src="/vendor/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/vendor/angular/angular.js"></script>
+<script src="/vendor/angular-bootstrap/ui-bootstrap.js"></script>
+<script src="/src/app.js"></script>
+<script src="/src/filter/secondsToDateTime.filter.js"></script>
+<script src="/src/services/vkApi.service.js"></script>
+<script src="/src/services/vkResponse.service.js"></script>
+<script src="/src/services/token.js"></script>
+<script src="/src/directive/player.directive.js"></script>
+<script src="/src/controllers/playerCtrl.js"></script>
+</body>
+</html>
