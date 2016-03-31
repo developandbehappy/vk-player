@@ -44,7 +44,7 @@ playerApp.directive('player', function ($timeout, $interval) {
             });
             interval = $interval(function () {
               scope.curAudio.cur_duration = Math.floor(sound.pos());
-            }, 1000);
+            }, 300);
             allAudio.push(sound);
           }
         }
@@ -75,7 +75,7 @@ playerApp.directive('player', function ($timeout, $interval) {
         });
         interval = $interval(function () {
           scope.curAudio.cur_duration = Math.floor(sound.pos());
-        }, 1000);
+        }, 300);
         allAudio.push(sound);
       };
 
@@ -115,7 +115,7 @@ playerApp.directive('player', function ($timeout, $interval) {
         });
         interval = $interval(function () {
           scope.curAudio.cur_duration = Math.floor(sound.pos());
-        }, 1000);
+        }, 300);
         allAudio.push(sound);
         $timeout(function () {
           scope.nextPlayStat = true;
@@ -125,7 +125,9 @@ playerApp.directive('player', function ($timeout, $interval) {
 
       function stopAll() {
         _.each(allAudio, function (item) {
-          item.stop().play;
+          console.log('item', item);
+          item.stop();
+          item.unload();
         });
         $interval.cancel(interval);
       }
