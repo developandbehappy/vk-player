@@ -1,4 +1,4 @@
-playerApp.directive('player', function ($timeout, $interval) {
+playerApp.directive('player', function ($timeout, $interval, $http) {
   return {
     restrict: 'E',
     replace: true,
@@ -19,7 +19,9 @@ playerApp.directive('player', function ($timeout, $interval) {
         cur_duration: 0,
         pause: true,
         stop: false,
-        volume: 0.5
+        volume: 0.5,
+        photo_author: '',
+        wrapper_author: ''
       };
 
       scope.pauseAndPlay = function () {
@@ -122,13 +124,12 @@ playerApp.directive('player', function ($timeout, $interval) {
         }, 400);
       };
 
-
       function stopAll() {
         _.each(allAudio, function (item) {
-          console.log('item', item);
           item.stop();
           item.unload();
         });
+        getAlbumPhoto();
         $interval.cancel(interval);
       }
 
@@ -144,6 +145,34 @@ playerApp.directive('player', function ($timeout, $interval) {
         });
         audioItem.active = true;
         return audioItem;
+      }
+
+      function getAlbumPhoto() {
+        var dataLink = {
+          req: 'http://ws.audioscrobbler.com/2.0/',
+          method: ['?method=library.getartists'],
+          api_key: '&api_key=a7c03fb6dc378100dfe254c7b20da564',
+          name: scope.curAudio.author,
+          page: '2',
+          limit: 1
+        };
+
+        var url = dataLink.req
+          + dataLink.method[0]
+          + dataLink.api_key
+          + '&user='
+          + dataLink.name
+          + '&page='
+          + dataLink.page
+          + '&limit='
+          + dataLink.limit
+          + '&format=json'
+          + '&callback=JSON_CALLBACK';
+
+        $http.jsonp(url).success(function (res) {
+          console.log('res', res);
+          //$scope.dataAudio = res.response;
+        })
       }
     }
   };
