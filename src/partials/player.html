@@ -5,7 +5,8 @@
         </div>
         <div class="player-buttons">
             <ul>
-                <li ng-click="nextPlay(false)" class="player-btn player-btn-backward"><i class="fa fa-step-backward"></i></li>
+                <li ng-click="nextPlay(false)" class="player-btn player-btn-backward">
+                    <i class="fa fa-step-backward"></i></li>
                 <li ng-click="pauseAndPlay()" class="player-btn player-btn-middle"><i
                         ng-class="{'fa fa-stop': curAudio.stop, 'fa fa-play': curAudio.pause, 'fa fa-pause': !curAudio.pause}"></i>
                 </li>
