@@ -10,7 +10,10 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       var interval = '';
       var allAudio = [];
       var audioList = [];
+
       scope.nextPlayStat = true;
+      scope.auth = false;
+
       scope.curAudio = {
         name: '',
         author: '',
@@ -24,6 +27,29 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         wrapper_author: ''
       };
 
+
+      VK.Auth.getLoginStatus(function (response) {
+        if (response.session) {
+          scope.auth = true;
+          getToken();
+        }
+      });
+
+
+      scope.logout = function () {
+        scope.auth = false;
+        scope.props = [];
+        VK.Auth.logout();
+      };
+
+      scope.login = function () {
+        VK.Auth.login(function (res) {
+          if (res.session) {
+            scope.auth = true;
+            getToken();
+          }
+        }, 65536 + 8);
+      };
       scope.pauseAndPlay = function () {
         scope.curAudio.pause = !scope.curAudio.pause;
         if (scope.curAudio.pause) {
@@ -177,6 +203,28 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           console.log('res', res);
           //$scope.dataAudio = res.response;
         })
+      }
+      var rangeVolume = $("#rangeVolume");
+      rangeVolume.rangeslider({
+        polyfill: false,
+        onInit: function () {
+          $handle = $('.player-volume-character', this.$range);
+        }
+      });
+      function init() {
+        // Временно гавнокодим, т.к не знаю как отследить прием данных с вк.. Его эти VK. функции ужс нет ни then, finally
+        var nano = $(".nano");
+        $interval(function () {
+          nano.nanoScroller({sliderMaxHeight: 10});
+          nano.nanoScroller();
+        }, 100);
+      }
+      function getToken() {
+        VK.Api.call('audio.get', {}, function (res) {
+          scope.props = res.response;
+        });
+        init();
+
       }
     }
   };

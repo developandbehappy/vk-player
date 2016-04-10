@@ -168,6 +168,18 @@
   left: 5px;
   bottom: 45.575px;
 }
+.player-loading-bar .fa {
+  position: absolute;
+  color: #453339;
+  font-size: 20px;
+  cursor: pointer;
+}
+.player-loading-bar .fa:hover {
+  color: #543e45;
+}
+.player-loading-bar .ico-auth {
+  right: 21px;
+}
 .rangeslider--horizontal {
   width: 150px;
   height: 5px;

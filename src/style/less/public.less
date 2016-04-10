@@ -1,3 +1,5 @@
+@colorButtonsRightSide: #453339;
+
 #player {
   width: 400px;
   height: 320px;
@@ -57,7 +59,7 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background: #453339;
+        background: @colorButtonsRightSide;
         color: #f5b75b;
         text-align: center;
         line-height: 40px;
@@ -79,7 +81,7 @@
           z-index: 1;
         }
         &:hover {
-          background: darken(#453339, 5%);
+          background: darken(@colorButtonsRightSide, 5%);
           color: darken(#f5b75b, 5%)
         }
       }
@@ -134,7 +136,7 @@
   }
 
   #volume {
-  margin-left: 15px;
+    margin-left: 15px;
   }
 
   .players-audio-list {
@@ -149,7 +151,7 @@
       line-height: 3px;
       text-shadow: 0 1px #000;
       cursor: pointer;
-      &:hover, &.players-audio-item-active  {
+      &:hover, &.players-audio-item-active {
         background: #574339;
         border-left: 1px solid #d49e56;
         .players-item-name {
@@ -172,11 +174,26 @@
     margin-top: 15px;
     padding: 0 10px;
     #ico-volume {
-      color: #453339;
+      color: @colorButtonsRightSide;
       position: absolute;
       left: 5px;
       bottom: 45.575px;
     }
+  }
+}
+
+.player-loading-bar {
+  .fa {
+    position: absolute;
+    color: @colorButtonsRightSide;
+    font-size: 20px;
+    cursor: pointer;
+    &:hover {
+      color: lighten(@colorButtonsRightSide, 5%);
+    }
+  }
+  .ico-auth {
+    right: 21px;
   }
 }
 
