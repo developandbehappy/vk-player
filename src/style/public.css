@@ -122,6 +122,9 @@
   padding: 0;
   height: 100%;
 }
+#player #volume {
+  margin-left: 15px;
+}
 #player .players-audio-list {
   border-left: 1px solid #574339;
   height: 240px;
@@ -159,8 +162,11 @@
   margin-top: 15px;
   padding: 0 10px;
 }
-#player .player-volume .fa {
+#player .player-volume #ico-volume {
   color: #453339;
+  position: absolute;
+  left: 5px;
+  bottom: 45.575px;
 }
 .rangeslider--horizontal {
   width: 150px;
