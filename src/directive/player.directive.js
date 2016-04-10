@@ -53,6 +53,9 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       };
 
       scope.changeVolume = function () {
+        if (!_.last(allAudio)) {
+          return false;
+        }
         _.last(allAudio).volume(scope.curAudio.volume).play;
       };
 
@@ -88,6 +91,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         }
 
         scope.nextPlayStat = false;
+        scope.curAudio.pause = false;
         var curPlay = _.last(allAudio);
         var sizeProps = _.size(scope.props);
         var indexSound = 0;
@@ -129,7 +133,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           item.stop();
           item.unload();
         });
-        getAlbumPhoto();
+        //getAlbumPhoto();
         $interval.cancel(interval);
       }
 
