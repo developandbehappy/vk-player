@@ -50,6 +50,13 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           }
         }, 65536 + 8);
       };
+
+      scope.randomTrack = function () {
+        scope.props = _.sortBy(scope.props, function (item) {
+          return -item;
+        })
+      };
+
       scope.pauseAndPlay = function () {
         scope.curAudio.pause = !scope.curAudio.pause;
         if (scope.curAudio.pause) {

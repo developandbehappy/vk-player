@@ -173,12 +173,16 @@
   color: #453339;
   font-size: 20px;
   cursor: pointer;
+  bottom: 15px;
 }
 .player-loading-bar .fa:hover {
   color: #543e45;
 }
 .player-loading-bar .ico-auth {
   right: 21px;
+}
+.player-loading-bar .ico-random {
+  right: 50px;
 }
 .rangeslider--horizontal {
   width: 150px;
