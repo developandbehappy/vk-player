@@ -2,7 +2,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
   return {
     restrict: 'E',
     replace: true,
-    templateUrl: '/vk-player/src/partials/player.html',
+    templateUrl: '/src/partials/player.html',
     scope: {
       props: '='
     },
