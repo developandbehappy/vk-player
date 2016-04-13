@@ -24,7 +24,8 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         stop: false,
         volume: 0.5,
         photo_author: '',
-        wrapper_author: ''
+        wrapper_author: '',
+        style: ''
       };
 
 
@@ -79,7 +80,8 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
             });
             interval = $interval(function () {
               scope.curAudio.cur_duration = Math.floor(sound.pos());
-            }, 300);
+              setBkgCurPosition();
+            }, 100);
             allAudio.push(sound);
           }
         }
@@ -113,7 +115,8 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         });
         interval = $interval(function () {
           scope.curAudio.cur_duration = Math.floor(sound.pos());
-        }, 300);
+          setBkgCurPosition();
+        }, 100);
         allAudio.push(sound);
       };
 
@@ -154,12 +157,23 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         });
         interval = $interval(function () {
           scope.curAudio.cur_duration = Math.floor(sound.pos());
-        }, 300);
+          setBkgCurPosition();
+        }, 100);
         allAudio.push(sound);
         $timeout(function () {
           scope.nextPlayStat = true;
         }, 400);
       };
+
+      function setBkgCurPosition() {
+        var duration = scope.curAudio.duration;
+        var curDuration = scope.curAudio.cur_duration;
+        var getProcent = 100 - (curDuration * 100) / duration;
+        var curDeg =  (180 + (getProcent)) + 'deg';
+        console.log('duration', duration);
+        console.log('CurDuration: ', curDuration);
+        scope.curAudio.style = 'background: linear-gradient(' + curDeg + ', #5d4c52 ' + getProcent + '%, #edb159 0);';
+      }
 
       function stopAll() {
         _.each(allAudio, function (item) {

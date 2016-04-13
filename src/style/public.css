@@ -87,12 +87,11 @@
   height: 200px;
   border-bottom-right-radius: 100%;
   overflow: hidden;
-  background: linear-gradient(200deg, #5d4c52 90%, #edb159 0);
+  background: linear-gradient(200deg, #5d4c52 100%, #edb159 0);
 }
 #player .player-logo-wrapper .player-logo {
   width: 97%;
   height: 97%;
-  background: url('http://media.e-encuesta.com/images/363639.jpg') no-repeat 42% 4%;
   border-bottom-right-radius: 100%;
 }
 #player .players-status-bar {
