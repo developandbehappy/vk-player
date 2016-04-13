@@ -29,7 +29,8 @@
                 <div class="nano-content">
                     <div ng-repeat="itemAudio in props" ng-click="startAudio(itemAudio)"
                          ng-class="{'players-audio-list-item players-audio-item-active': itemAudio.active, 'players-audio-list-item': !itemAudio.active}">
-                        <div class="col-xs-10 players-item-name" ng-bind="itemAudio.title | limitTo:15"></div>
+                        <div ng-if="itemAudio.active" class="col-xs-10 players-item-name" ng-bind="curAudio.name | limitTo:12"></div>
+                        <div ng-if="!itemAudio.active" class="col-xs-10 players-item-name" ng-bind="itemAudio.title | limitTo:16"></div>
                         <div ng-if="!itemAudio.active" class="col-xs-2 players-item-duration"
                              ng-bind="itemAudio.duration | secondsToDateTime | date:'mm:ss'"></div>
                         <div ng-if="itemAudio.active" class="col-xs-2 players-item-duration" style="width: 74px;">{{
