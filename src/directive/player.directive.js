@@ -53,7 +53,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
 
       scope.randomTrack = function () {
         scope.props = _.sortBy(scope.props, function (item) {
-          return -item;
+          return 0.5 * Math.random();
         })
       };
 
