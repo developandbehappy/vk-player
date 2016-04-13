@@ -92,6 +92,7 @@
 #player .player-logo-wrapper .player-logo {
   width: 97%;
   height: 97%;
+  background: url('http://media.e-encuesta.com/images/363639.jpg') no-repeat 42% 4%;
   border-bottom-right-radius: 100%;
 }
 #player .players-status-bar {
