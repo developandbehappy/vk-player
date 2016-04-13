@@ -10,7 +10,8 @@
                 <li ng-click="pauseAndPlay()" class="player-btn player-btn-middle"><i
                         ng-class="{'fa fa-stop': curAudio.stop, 'fa fa-play': curAudio.pause, 'fa fa-pause': !curAudio.pause}"></i>
                 </li>
-                <li ng-click="nextPlay(true)" class="player-btn player-btn-forward"><i class="fa fa-step-forward"></i></li>
+                <li ng-click="nextPlay(true)" class="player-btn player-btn-forward"><i class="fa fa-step-forward"></i>
+                </li>
             </ul>
         </div>
         <div class="players-status-bar">
@@ -43,7 +44,8 @@
         </div>
         <div class="player-setting-bar">
             <div class="player-volume">
-                <i ng-class="{'fa fa-volume-up': curAudio.volume >= 0.6, 'fa fa-volume-down': curAudio.volume <= 0.6 && curAudio.volume != 0, 'fa fa-volume-off': curAudio.volume == 0}" id="ico-volume"></i>
+                <i ng-class="{'fa fa-volume-up': curAudio.volume >= 0.6, 'fa fa-volume-down': curAudio.volume <= 0.6 && curAudio.volume != 0, 'fa fa-volume-off': curAudio.volume == 0}"
+                   id="ico-volume"></i>
                 <label id="volume">
                     <input ng-change="changeVolume()"
                            min="0"

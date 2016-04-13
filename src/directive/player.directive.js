@@ -31,7 +31,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       VK.Auth.getLoginStatus(function (response) {
         if (response.session) {
           scope.auth = true;
-          getToken();
+          getAudio();
         }
       });
 
@@ -46,7 +46,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         VK.Auth.login(function (res) {
           if (res.session) {
             scope.auth = true;
-            getToken();
+            getAudio();
           }
         }, 65536 + 8);
       };
@@ -211,6 +211,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           //$scope.dataAudio = res.response;
         })
       }
+
       var rangeVolume = $("#rangeVolume");
       rangeVolume.rangeslider({
         polyfill: false,
@@ -219,20 +220,21 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         }
       });
       function init() {
-        // Временно гавнокодим, т.к не знаю как отследить прием данных с вк.. Его эти VK. функции ужс нет ни then, finally
+        // Временно гавнокодим, т.к не знаю как отследить прием данных с вк.. Его эти VK функции ужс нет ни then, finally
         var nano = $(".nano");
         $interval(function () {
           nano.nanoScroller({sliderMaxHeight: 10});
           nano.nanoScroller();
         }, 100);
       }
-      function getToken() {
+
+      function getAudio() {
         VK.Api.call('audio.get', {}, function (res) {
           scope.props = res.response;
         });
         init();
-
       }
+
     }
   };
 });
