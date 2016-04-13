@@ -8,6 +8,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
     },
     link: function (scope) {
       var interval = '';
+      var intervalCutName = '';
       var allAudio = [];
       var audioList = [];
 
@@ -70,6 +71,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           } else {
             var firstEl = _.first(scope.props);
             addActiveClassItem(firstEl);
+            runningString(scope.curAudio.name);
             var sound = new Howl({
               urls: [firstEl.url],
               autoplay: true,
@@ -105,6 +107,8 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         scope.curAudio.name = audioItem.title;
         scope.curAudio.author = audioItem.artist;
         scope.curAudio.duration = audioItem.duration;
+        $interval.cancel(intervalCutName);
+        runningString(scope.curAudio.name);
         var sound = new Howl({
           urls: audioList,
           autoplay: true,
@@ -125,7 +129,6 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         if (!scope.nextPlayStat || _.isEmpty(allAudio)) {
           return false;
         }
-
         scope.nextPlayStat = false;
         scope.curAudio.pause = false;
         var curPlay = _.last(allAudio);
@@ -163,13 +166,15 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         $timeout(function () {
           scope.nextPlayStat = true;
         }, 400);
+        $interval.cancel(intervalCutName);
+        runningString(scope.curAudio.name);
       };
 
       function setBkgCurPosition() {
         var duration = scope.curAudio.duration;
         var curDuration = scope.curAudio.cur_duration;
         var getProcent = 100 - (curDuration * 100) / duration;
-        var curDeg =  (174 + (getProcent)) + 'deg';
+        var curDeg = (174 + (getProcent)) + 'deg';
         scope.curAudio.style = 'background: linear-gradient(' + curDeg + ', #5d4c52 ' + getProcent + '%, #edb159 0);';
       }
 
@@ -231,6 +236,27 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           $handle = $('.player-volume-character', this.$range);
         }
       });
+
+      function runningString(str) {
+        var strLength = scope.curAudio.name.length;
+        var cutName = scope.curAudio.name;
+        var curCut = 0;
+        if (strLength <= 12) {
+          return false;
+        }
+        intervalCutName = $interval(function () {
+          curCut++;
+          if (scope.curAudio.name[0] === ' ') {
+            curCut++
+          }
+          if (curCut === strLength) {
+            curCut = 0;
+            cutName = str;
+          }
+          scope.curAudio.name = str.substring(curCut, strLength);
+        }, 300);
+      }
+
       function init() {
         // Временно гавнокодим, т.к не знаю как отследить прием данных с вк.. Его эти VK функции ужс нет ни then, finally
         var nano = $(".nano");
