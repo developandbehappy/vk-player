@@ -240,15 +240,16 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       function runningString(str) {
         var strLength = scope.curAudio.name.length;
         var cutName = scope.curAudio.name;
+        scope.curAudio.name = scope.curAudio.name.trim();
         var curCut = 0;
         if (strLength <= 12) {
           return false;
         }
         intervalCutName = $interval(function () {
-          curCut++;
-          if (scope.curAudio.name[0] === ' ') {
+          if (scope.curAudio.name[0] === ' ' && _.last(scope.curAudio.name) !== ' ') {
             curCut++
           }
+          curCut++;
           if (curCut === strLength) {
             curCut = 0;
             cutName = str;
