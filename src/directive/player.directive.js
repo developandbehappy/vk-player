@@ -169,9 +169,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         var duration = scope.curAudio.duration;
         var curDuration = scope.curAudio.cur_duration;
         var getProcent = 100 - (curDuration * 100) / duration;
-        var curDeg =  (178 + (getProcent)) + 'deg';
-        console.log('duration', duration);
-        console.log('CurDuration: ', curDuration);
+        var curDeg =  (177 + (getProcent)) + 'deg';
         scope.curAudio.style = 'background: linear-gradient(' + curDeg + ', #5d4c52 ' + getProcent + '%, #edb159 0);';
       }
 
