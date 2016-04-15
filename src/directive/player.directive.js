@@ -183,7 +183,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           item.stop();
           item.unload();
         });
-        //getAlbumPhoto();
+        getAlbumPhoto();
         $interval.cancel(interval);
       }
 
@@ -207,9 +207,11 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           method: ['?method=library.getartists'],
           api_key: '&api_key=a7c03fb6dc378100dfe254c7b20da564',
           name: scope.curAudio.author,
-          page: '2',
+          page: '1',
           limit: 1
         };
+
+        console.log('dataLink.name', dataLink.name);
 
         var url = dataLink.req
           + dataLink.method[0]
@@ -223,9 +225,10 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           + '&format=json'
           + '&callback=JSON_CALLBACK';
 
+        console.log('url', url);
         $http.jsonp(url).success(function (res) {
+          //console.log('res', res);
           console.log('res', res);
-          //$scope.dataAudio = res.response;
         })
       }
 
