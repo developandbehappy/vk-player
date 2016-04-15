@@ -98,6 +98,11 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       };
 
       scope.startAudio = function (audioItem) {
+        console.log('audioItem', audioItem);
+        if (audioItem.artist == scope.curAudio.author) {
+          scope.pauseAndPlay();
+          return false
+        }
         scope.curAudio.pause = false;
         audioList = [audioItem.url];
         audioItem = addActiveClassItem(audioItem);
