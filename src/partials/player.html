@@ -16,8 +16,8 @@
             </ul>
         </div>
         <div class="players-status-bar">
-            <div class="players-current-audio players-audio-name" ng-bind="curAudio.name | limitTo:25"></div>
-            <div class="players-current-audio players-audio-author" ng-bind="curAudio.author | limitTo:25"></div>
+            <div class="players-current-audio players-audio-name" ng-bind="curAudio.name | limitTo:20"></div>
+            <div class="players-current-audio players-audio-author" ng-bind="curAudio.author | limitTo:20"></div>
             <div class="players-current-audio players-audio-duration"> {{ curAudio.cur_duration | secondsToDateTime |
                 date:'mm:ss' }} | {{ curAudio.duration | secondsToDateTime | date:'mm:ss' }}
             </div>
