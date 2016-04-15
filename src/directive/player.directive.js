@@ -24,7 +24,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         pause: true,
         stop: false,
         volume: 0.5,
-        photo_author: '/images/default_avatar.jpg',
+        photo_author: '/vk-player/images/default_avatar.jpg',
         wrapper_author: '',
         style: ''
       };
@@ -263,7 +263,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
             return 0.5 * Math.random();
           }));
           if (!firstRandom) {
-            scope.curAudio.photo_author = '/images/default_avatar.jpg';
+            scope.curAudio.photo_author = '/vk-player/images/default_avatar.jpg';
             return false;
           }
           scope.curAudio.photo_author = firstRandom.photo_big;
