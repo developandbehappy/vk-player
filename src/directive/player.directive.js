@@ -24,7 +24,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         pause: true,
         stop: false,
         volume: 0.5,
-        photo_author: '',
+        photo_author: '/images/default_avatar.jpg',
         wrapper_author: '',
         style: ''
       };
@@ -80,6 +80,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
                 scope.nextPlay(true)
               }
             });
+            getArtistPhoto();
             interval = $interval(function () {
               scope.curAudio.cur_duration = Math.floor(sound.pos());
               setBkgCurPosition();
@@ -107,6 +108,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         scope.curAudio.name = audioItem.title;
         scope.curAudio.author = audioItem.artist;
         scope.curAudio.duration = audioItem.duration;
+        getArtistPhoto();
         $interval.cancel(intervalCutName);
         runningString(scope.curAudio.name);
         var sound = new Howl({
@@ -158,6 +160,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
             scope.nextPlay(true)
           }
         });
+        getArtistPhoto();
         interval = $interval(function () {
           scope.curAudio.cur_duration = Math.floor(sound.pos());
           setBkgCurPosition();
@@ -183,7 +186,6 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           item.stop();
           item.unload();
         });
-        getAlbumPhoto();
         $interval.cancel(interval);
       }
 
@@ -199,37 +201,6 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         });
         audioItem.active = true;
         return audioItem;
-      }
-
-      function getAlbumPhoto() {
-        var dataLink = {
-          req: 'http://ws.audioscrobbler.com/2.0/',
-          method: ['?method=library.getartists'],
-          api_key: '&api_key=a7c03fb6dc378100dfe254c7b20da564',
-          name: scope.curAudio.author,
-          page: '1',
-          limit: 1
-        };
-
-        console.log('dataLink.name', dataLink.name);
-
-        var url = dataLink.req
-          + dataLink.method[0]
-          + dataLink.api_key
-          + '&user='
-          + dataLink.name
-          + '&page='
-          + dataLink.page
-          + '&limit='
-          + dataLink.limit
-          + '&format=json'
-          + '&callback=JSON_CALLBACK';
-
-        console.log('url', url);
-        $http.jsonp(url).success(function (res) {
-          //console.log('res', res);
-          console.log('res', res);
-        })
       }
 
       var rangeVolume = $("#rangeVolume");
@@ -275,6 +246,28 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           scope.props = res.response;
         });
         init();
+      }
+
+      function getArtistPhoto() {
+        VK.Api.call('groups.search', {
+          q: scope.curAudio.author,
+          sort: 2,
+          count: 50
+        }, function (res) {
+          var dataWithImage = _.filter(res.response, function (item) {
+            return item.photo_big;
+          }).filter(function (item) {
+            return item.photo_big !== 'http://vk.com/images/community_200.png'
+          });
+          var firstRandom = _.first(_.sortBy(dataWithImage, function () {
+            return 0.5 * Math.random();
+          }));
+          if (!firstRandom) {
+            scope.curAudio.photo_author = '/images/default_avatar.jpg';
+            return false;
+          }
+          scope.curAudio.photo_author = firstRandom.photo_big;
+        });
       }
 
     }
