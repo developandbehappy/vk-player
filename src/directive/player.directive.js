@@ -30,14 +30,12 @@ playerApp.directive('player', function ($timeout, $interval) {
         mute: false
       };
 
-
       VK.Auth.getLoginStatus(function (response) {
         if (response.session) {
           scope.auth = true;
           getAudio();
         }
       });
-
 
       scope.logout = function () {
         scope.auth = false;
@@ -103,17 +101,29 @@ playerApp.directive('player', function ($timeout, $interval) {
           curAudio.volume(0);
         } else {
           scope.curAudio.mute = false;
-
           curAudio.volume(curVolume);
         }
-        console.log('_.last(allAudio)', _.last(allAudio));
       };
 
-      scope.changeVolume = function () {
+
+      scope.changeVolume = function (status) {
         if (!_.last(allAudio)) {
           return false;
         }
-        _.last(allAudio).volume(scope.curAudio.volume).play;
+        var volume = scope.curAudio.volume;
+        volume = Number(volume);
+        if (status === 'up') {
+          volume += 0.05;
+        }
+        if (status === 'down') {
+          volume -= 0.05;
+        }
+        if (volume > 1 || volume < 0) {
+          return false;
+        }
+        volume = String(volume);
+        rangeVolume.val(volume).change();
+        _.last(allAudio).volume(volume).play;
       };
 
       scope.startAudio = function (audioItem) {
@@ -273,7 +283,10 @@ playerApp.directive('player', function ($timeout, $interval) {
         // Временно гавнокодим, т.к не знаю как отследить прием данных с вк.. Его эти VK функции ужс нет ни then, finally
         var nano = $(".nano");
         $interval(function () {
-          nano.nanoScroller({sliderMaxHeight: 10});
+          nano.nanoScroller({
+            sliderMaxHeight: 10,
+            alwaysVisible: true
+          });
           nano.nanoScroller();
         }, 100);
       }
@@ -305,6 +318,14 @@ playerApp.directive('player', function ($timeout, $interval) {
           }
           scope.curAudio.photo_author = firstRandom.photo_big;
         });
+      }
+
+      bindButtons();
+      function bindButtons() {
+        Mousetrap.bind('ctrl+alt+right', function() { scope.nextPlay(true) });
+        Mousetrap.bind('ctrl+alt+left', function() { scope.nextPlay() });
+        Mousetrap.bind('ctrl+alt+up', function() { scope.changeVolume('up') });
+        Mousetrap.bind('ctrl+alt+down', function() { scope.changeVolume('down') });
       }
 
     }
