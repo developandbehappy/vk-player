@@ -1,4 +1,4 @@
-playerApp.directive('player', function ($timeout, $interval, $http) {
+playerApp.directive('player', function ($timeout, $interval) {
   return {
     restrict: 'E',
     replace: true,
@@ -98,8 +98,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       };
 
       scope.startAudio = function (audioItem) {
-        console.log('audioItem', audioItem);
-        if (audioItem.artist == scope.curAudio.author) {
+        if (audioItem.url == scope.curAudio.src) {
           scope.pauseAndPlay();
           return false
         }
