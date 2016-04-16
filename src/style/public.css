@@ -19,6 +19,7 @@ body {
   top: 0;
   -webkit-user-select: none;
   -moz-user-select: none;
+  transition: all 0.3s ease-in;
 }
 #player .nano-pane {
   background: rgba(141, 196, 186, 0.3);
@@ -95,6 +96,7 @@ body {
   width: 97%;
   height: 97%;
   background-blend-mode: multiply;
+  transition: all 0.3s ease-in;
   border-bottom-right-radius: 100%;
   background-size: cover !important;
 }
@@ -140,10 +142,6 @@ body {
 #player .players-audio-list .players-audio-list-item:hover,
 #player .players-audio-list .players-audio-list-item.players-audio-item-active {
   background: rgba(87, 67, 57, 0.6);
-}
-#player .players-audio-list .players-audio-list-item:hover .players-item-name,
-#player .players-audio-list .players-audio-list-item.players-audio-item-active .players-item-name {
-  padding: 0 0 0 4px;
 }
 #player .players-audio-list .players-item-name {
   color: #d49e56;
