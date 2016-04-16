@@ -46,7 +46,7 @@
         </div>
         <div class="player-setting-bar">
             <div class="player-volume">
-                <i ng-class="{'fa fa-volume-up': curAudio.volume >= 0.6, 'fa fa-volume-down': curAudio.volume <= 0.6 && curAudio.volume != 0, 'fa fa-volume-off': curAudio.volume == 0}"
+                <i ng-click="mute()" ng-class="{'fa fa-volume-up': curAudio.volume >= 0.6 && !curAudio.mute, 'fa fa-volume-down': curAudio.volume <= 0.6 && curAudio.volume != 0 && !curAudio.mute, 'fa fa-volume-off': curAudio.volume == 0 || curAudio.mute}"
                    id="ico-volume"></i>
                 <label id="volume">
                     <input ng-change="changeVolume()"

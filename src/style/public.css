@@ -25,7 +25,6 @@ body {
   border-radius: 0;
   width: 5px;
   margin-right: 8px;
-  box-shadow: 0 0 1px #000;
 }
 #player .nano-pane .nano-slider {
   width: 10px;
@@ -33,14 +32,14 @@ body {
   border-radius: 50%;
   background: #f5b65a;
   position: absolute;
-  box-shadow: 0 0 1px #000;
-  right: -4px;
+  right: -3.5px;
   cursor: pointer;
 }
 #player .player-left-side {
   height: 100%;
   position: relative;
   padding: 0;
+  z-index: 1;
 }
 #player .player-buttons {
   position: absolute;
@@ -59,14 +58,13 @@ body {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #453339;
+  background: #33272e;
   color: #f5b75b;
   text-align: center;
   line-height: 40px;
   transition: all 0.2s ease-in-out;
   position: relative;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-  text-shadow: 0 1px #000;
   cursor: pointer;
 }
 #player .player-buttons ul .player-btn.player-btn-forward {
@@ -82,15 +80,16 @@ body {
   z-index: 1;
 }
 #player .player-buttons ul .player-btn:hover {
-  background: #36282d;
+  background: #251c21;
   color: #f4ac43;
 }
 #player .player-logo-wrapper {
-  width: 195px;
+  width: 197.5px;
   height: 200px;
+  z-index: 1;
   border-bottom-right-radius: 100%;
   overflow: hidden;
-  background: linear-gradient(200deg, #5d4c52 100%, #edb159 0);
+  background: linear-gradient(200deg, #33272e 100%, #f5b75b 0);
 }
 #player .player-logo-wrapper .player-logo {
   width: 97%;
@@ -120,6 +119,7 @@ body {
 #player .player-right-side {
   padding: 0;
   height: 100%;
+  z-index: 0;
 }
 #player #volume {
   margin-left: 15px;
@@ -130,18 +130,16 @@ body {
   overflow: hidden;
 }
 #player .players-audio-list .players-audio-list-item {
-  width: 92%;
+  width: 93.5%;
   text-transform: uppercase;
   font-size: 12px;
   padding: 20px 0;
   line-height: 3px;
-  text-shadow: 0 1px #000;
   cursor: pointer;
 }
 #player .players-audio-list .players-audio-list-item:hover,
 #player .players-audio-list .players-audio-list-item.players-audio-item-active {
-  background: #574339;
-  border-left: 1px solid #d49e56;
+  background: rgba(87, 67, 57, 0.6);
 }
 #player .players-audio-list .players-audio-list-item:hover .players-item-name,
 #player .players-audio-list .players-audio-list-item.players-audio-item-active .players-item-name {
@@ -162,20 +160,24 @@ body {
   padding: 0 10px;
 }
 #player .player-volume #ico-volume {
-  color: #453339;
+  color: #33272e;
   position: absolute;
   left: 5px;
-  bottom: 41.575px;
+  bottom: 38.2px;
+  font-size: 18px;
+  cursor: pointer;
 }
 .player-loading-bar .fa {
   position: absolute;
-  color: #453339;
-  font-size: 20px;
+  color: #d49e56;
+  opacity: .5;
+  font-size: 18px;
   cursor: pointer;
   bottom: 15px;
+  font-weight: 100;
 }
 .player-loading-bar .fa:hover {
-  color: #543e45;
+  opacity: .8;
 }
 .player-loading-bar .ico-auth {
   right: 21px;
@@ -192,7 +194,6 @@ body {
   border-radius: 5px;
   margin-bottom: 2.5px;
   overflow: hidden;
-  box-shadow: 0 0 0 1px #000;
 }
 .rangeslider--horizontal .rangeslider,
 .rangeslider--horizontal .rangeslider__fill {
@@ -206,8 +207,7 @@ body {
   border-radius: 50%;
   background: #f5b65a;
   position: absolute;
-  box-shadow: 0 0 0 1px #000;
-  bottom: 43.8px;
+  bottom: 43.5px;
   margin-left: 28px;
   cursor: pointer;
 }
