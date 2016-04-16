@@ -150,6 +150,7 @@ playerApp.directive('player', function ($timeout, $interval) {
         } else {
           indexSound--;
         }
+        changeScrollPosition(indexSound);
         if (indexSound < 0) {
           indexSound = sizeProps - 1;
         } else if (indexSound > sizeProps - 1 && indexSound > 0) {
@@ -214,6 +215,19 @@ playerApp.directive('player', function ($timeout, $interval) {
           $handle = $('.player-volume-character', this.$range);
         }
       });
+
+      function changeScrollPosition(value) {
+        var heightItem = 40;
+        var defaultScrollItem = 4;
+        var lengthAllAudio = scope.props.length;
+        var valChange = heightItem * (value - defaultScrollItem);
+        if (valChange < -(heightItem * defaultScrollItem)) {
+          valChange = heightItem * lengthAllAudio
+        } else if (valChange === (heightItem * lengthAllAudio) - (heightItem * defaultScrollItem)) {
+          valChange = -160;
+        }
+        $(".nano").nanoScroller({ scrollTop: valChange });
+      }
 
       function runningString(str) {
         var strLength = scope.curAudio.name.length;
