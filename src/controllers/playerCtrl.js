@@ -1,4 +1,4 @@
-playerApp.controller('playerCtrl', function ($scope, $http, $timeout, $window, $interval) {
+playerApp.controller('playerCtrl', function ($scope) {
   $scope.dataAudio = '';
   var dataForUrlVk = {
     req: 'https://api.vk.com/method/',

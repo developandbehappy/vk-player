@@ -55,7 +55,7 @@ playerApp.directive('player', function ($timeout, $interval) {
       };
 
       scope.randomTrack = function () {
-        scope.props = _.sortBy(scope.props, function (item) {
+        scope.props = _.sortBy(scope.props, function () {
           return 0.5 * Math.random();
         })
       };
@@ -68,7 +68,6 @@ playerApp.directive('player', function ($timeout, $interval) {
         if (scope.curAudio.pause) {
           if (!_.isEmpty(allAudio)) {
             _.last(allAudio).pause();
-            //_.last(allAudio).muted(true);
           }
         } else {
           if (!_.isEmpty(allAudio)) {
@@ -81,9 +80,9 @@ playerApp.directive('player', function ($timeout, $interval) {
             sound.play();
             getArtistPhoto();
             interval = $interval(function () {
-              scope.curAudio.cur_duration = Math.floor(sound.position());
+              scope.curAudio.cur_duration = sound.position();
               setBkgCurPosition();
-            }, 100);
+            }, 50);
             allAudio.push(sound);
             console.log('allAudio', allAudio);
           }
@@ -94,7 +93,7 @@ playerApp.directive('player', function ($timeout, $interval) {
       scope.mute = function () {
         var curAudio = _.last(allAudio);
         var curVolume = scope.curAudio.volume;
-        if (!curAudio) {
+        if (!curAudio || curVolume == 0) {
           return false;
         }
         var volume = scope.curAudio.mute;
@@ -148,7 +147,7 @@ playerApp.directive('player', function ($timeout, $interval) {
         var sound = new playerCore('playerCore', audioList, scope.curAudio.volume, nextPlay);
         sound.play();
         interval = $interval(function () {
-          scope.curAudio.cur_duration = Math.floor(sound.position());
+          scope.curAudio.cur_duration = sound.position();
           setBkgCurPosition();
         }, 100);
         allAudio.push(sound);
@@ -186,7 +185,7 @@ playerApp.directive('player', function ($timeout, $interval) {
 
         getArtistPhoto();
         interval = $interval(function () {
-          scope.curAudio.cur_duration = Math.floor(sound.position());
+          scope.curAudio.cur_duration = sound.position();
           setBkgCurPosition();
         }, 100);
         allAudio.push(sound);
@@ -196,7 +195,6 @@ playerApp.directive('player', function ($timeout, $interval) {
         $interval.cancel(intervalCutName);
         runningString(scope.curAudio.name);
       };
-
 
 
       scope.loop = function () {
@@ -216,15 +214,13 @@ playerApp.directive('player', function ($timeout, $interval) {
       };
 
 
-
       function setBkgCurPosition() {
         var duration = scope.curAudio.duration;
         var curDuration = scope.curAudio.cur_duration;
         var getProcent = 100 - (curDuration * 100) / duration;
-        var curDeg = (174 + (getProcent)) + 'deg';
+        var curDeg = (171 + (getProcent)) + 'deg';
         scope.curAudio.style = 'background: linear-gradient(' + curDeg + ', #33272e ' + getProcent + '%, #edb159 0);';
       }
-
 
 
       function addActiveClassItem(audioItem) {
@@ -253,6 +249,10 @@ playerApp.directive('player', function ($timeout, $interval) {
         }
       });
 
+      /**
+       * take item place in playlist
+       * @param value
+       */
       function changeScrollPosition(value) {
         scope.loopStyle = 0.6;
         var heightItem = 40;
