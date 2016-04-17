@@ -61,35 +61,35 @@ playerApp.directive('player', function ($timeout, $interval) {
       };
 
       scope.pauseAndPlay = function () {
+        if (scope.props.length === 0) {
+          return false
+        }
         scope.curAudio.pause = !scope.curAudio.pause;
         if (scope.curAudio.pause) {
           if (!_.isEmpty(allAudio)) {
-            _.last(allAudio).pause().play;
+            _.last(allAudio).pause();
+            //_.last(allAudio).muted(true);
           }
         } else {
           if (!_.isEmpty(allAudio)) {
-            _.last(allAudio).play().play;
+            _.last(allAudio).play();
           } else {
             var firstEl = _.first(scope.props);
             addActiveClassItem(firstEl);
             runningString(scope.curAudio.name);
-            var sound = new Howl({
-              urls: [firstEl.url],
-              autoplay: true,
-              volume: scope.curAudio.volume,
-              onend: function () {
-                scope.nextPlay(true)
-              }
-            });
+            var sound = new playerCore('playerCore', scope.curAudio.src, scope.curAudio.volume, nextPlay);
+            sound.play();
             getArtistPhoto();
             interval = $interval(function () {
-              scope.curAudio.cur_duration = Math.floor(sound.pos());
+              scope.curAudio.cur_duration = Math.floor(sound.position());
               setBkgCurPosition();
             }, 100);
             allAudio.push(sound);
+            console.log('allAudio', allAudio);
           }
         }
       };
+
 
       scope.mute = function () {
         var curAudio = _.last(allAudio);
@@ -97,8 +97,8 @@ playerApp.directive('player', function ($timeout, $interval) {
         if (!curAudio) {
           return false;
         }
-        var volume = curAudio._volume;
-        if (volume) {
+        var volume = scope.curAudio.mute;
+        if (!volume) {
           scope.curAudio.mute = true;
           curAudio.volume(0);
         } else {
@@ -123,9 +123,8 @@ playerApp.directive('player', function ($timeout, $interval) {
         if (volume > 1 || volume < 0) {
           return false;
         }
-        volume = String(volume);
         rangeVolume.val(volume).change();
-        _.last(allAudio).volume(volume).play;
+        _.last(allAudio).volume(volume);
       };
 
       scope.startAudio = function (audioItem) {
@@ -134,10 +133,10 @@ playerApp.directive('player', function ($timeout, $interval) {
           return false
         }
         scope.curAudio.pause = false;
-        audioList = [audioItem.url];
+        audioList = audioItem.url;
         audioItem = addActiveClassItem(audioItem);
         if (!_.isEmpty(allAudio)) {
-          stopAll();
+          //stopAll();
           scope.curAudio.cur_duration = 0;
         }
         scope.curAudio.name = audioItem.title;
@@ -146,16 +145,10 @@ playerApp.directive('player', function ($timeout, $interval) {
         getArtistPhoto();
         $interval.cancel(intervalCutName);
         runningString(scope.curAudio.name);
-        var sound = new Howl({
-          urls: audioList,
-          autoplay: true,
-          volume: scope.curAudio.volume,
-          onend: function () {
-            scope.nextPlay(true)
-          }
-        });
+        var sound = new playerCore('playerCore', audioList, scope.curAudio.volume, nextPlay);
+        sound.play();
         interval = $interval(function () {
-          scope.curAudio.cur_duration = Math.floor(sound.pos());
+          scope.curAudio.cur_duration = Math.floor(sound.position());
           setBkgCurPosition();
         }, 100);
         allAudio.push(sound);
@@ -172,7 +165,7 @@ playerApp.directive('player', function ($timeout, $interval) {
         var sizeProps = _.size(scope.props);
         var indexSound = 0;
         _.each(scope.props, function (item, index) {
-          if (item.url === curPlay._src) {
+          if (item.url === curPlay.src) {
             indexSound = index;
           }
         });
@@ -188,17 +181,12 @@ playerApp.directive('player', function ($timeout, $interval) {
           indexSound = 0;
         }
         addActiveClassItem(scope.props[indexSound]);
-        var sound = new Howl({
-          urls: [scope.props[indexSound].url],
-          autoplay: true,
-          volume: scope.curAudio.volume,
-          onend: function () {
-            scope.nextPlay(true)
-          }
-        });
+        var sound = new playerCore('playerCore', scope.curAudio.src, scope.curAudio.volume, nextPlay);
+        sound.play();
+
         getArtistPhoto();
         interval = $interval(function () {
-          scope.curAudio.cur_duration = Math.floor(sound.pos());
+          scope.curAudio.cur_duration = Math.floor(sound.position());
           setBkgCurPosition();
         }, 100);
         allAudio.push(sound);
@@ -209,12 +197,14 @@ playerApp.directive('player', function ($timeout, $interval) {
         runningString(scope.curAudio.name);
       };
 
+
+
       scope.loop = function () {
         var curAudio = _.last(allAudio);
         if (!curAudio) {
           return false
         }
-        if (curAudio._loop) {
+        if (scope.curAudio.loop) {
           scope.curAudio.loop = false;
           scope.loopStyle = 0.6;
           curAudio.loop(false);
@@ -225,6 +215,8 @@ playerApp.directive('player', function ($timeout, $interval) {
         }
       };
 
+
+
       function setBkgCurPosition() {
         var duration = scope.curAudio.duration;
         var curDuration = scope.curAudio.cur_duration;
@@ -233,26 +225,24 @@ playerApp.directive('player', function ($timeout, $interval) {
         scope.curAudio.style = 'background: linear-gradient(' + curDeg + ', #33272e ' + getProcent + '%, #edb159 0);';
       }
 
-      function stopAll() {
-        _.each(allAudio, function (item) {
-          item.stop();
-          item.unload();
-        });
-        $interval.cancel(interval);
-      }
+
 
       function addActiveClassItem(audioItem) {
-        stopAll();
-        scope.curAudio.name = audioItem.title;
-        scope.curAudio.author = audioItem.artist;
-        scope.curAudio.duration = audioItem.duration;
-        scope.curAudio.src = audioItem.url;
+        setCurrentAudioData(audioItem);
         scope.props = _.map(scope.props, function (item) {
           item.active = false;
           return item
         });
         audioItem.active = true;
         return audioItem;
+      }
+
+      function setCurrentAudioData(audioItem) {
+        scope.curAudio.mute = false;
+        scope.curAudio.name = audioItem.title;
+        scope.curAudio.author = audioItem.artist;
+        scope.curAudio.duration = audioItem.duration;
+        scope.curAudio.src = audioItem.url;
       }
 
       var rangeVolume = $("#rangeVolume");
@@ -296,6 +286,10 @@ playerApp.directive('player', function ($timeout, $interval) {
           }
           scope.curAudio.name = str.substring(curCut, strLength);
         }, 300);
+      }
+
+      function nextPlay() {
+        scope.nextPlay(true);
       }
 
       function init() {

@@ -1,6 +1,6 @@
 <div id="player" style="background-image: url('{{ curAudio.photo_author }}')">
     <div class="col-xs-6 player-left-side">
-        <audio src=""></audio>
+        <audio src="" id="playerCore"></audio>
         <div class="player-logo-wrapper" style="{{curAudio.style}}">
 
             <div class="player-logo" style="background: url('{{ curAudio.photo_author }}') no-repeat center center;"></div>
@@ -64,7 +64,7 @@
             <i ng-if="!auth" class="fa fa-sign-in ico-auth" ng-click="login()"></i>
             <i ng-if="auth" class="fa fa-sign-out ico-auth" ng-click="logout()"></i>
             <i ng-if="props.length > 1" class="fa fa-random ico-random" ng-click="randomTrack()"></i>
-            <!--<i ng-if="props.length > 1" class="fa fa-retweet ico-loop" ng-style="{opacity: loopStyle}" ng-click="loop()" aria-hidden="true"></i>-->
+            <i ng-if="props.length > 1" class="fa fa-retweet ico-loop" ng-style="{opacity: loopStyle}" ng-click="loop()" aria-hidden="true"></i>
         </div>
     </div>
 </div>
