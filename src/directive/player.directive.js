@@ -14,6 +14,7 @@ playerApp.directive('player', function ($timeout, $interval) {
 
       scope.nextPlayStat = true;
       scope.auth = false;
+      scope.loopStyle = 0.6;
 
       scope.curAudio = {
         name: '',
@@ -27,7 +28,8 @@ playerApp.directive('player', function ($timeout, $interval) {
         photo_author: '/images/default_avatar.jpg',
         wrapper_author: '',
         style: '',
-        mute: false
+        mute: false,
+        loop: false
       };
 
       VK.Auth.getLoginStatus(function (response) {
@@ -207,6 +209,22 @@ playerApp.directive('player', function ($timeout, $interval) {
         runningString(scope.curAudio.name);
       };
 
+      scope.loop = function () {
+        var curAudio = _.last(allAudio);
+        if (!curAudio) {
+          return false
+        }
+        if (curAudio._loop) {
+          scope.curAudio.loop = false;
+          scope.loopStyle = 0.6;
+          curAudio.loop(false);
+        } else {
+          scope.loopStyle = 1;
+          scope.curAudio.loop = true;
+          curAudio.loop(true);
+        }
+      };
+
       function setBkgCurPosition() {
         var duration = scope.curAudio.duration;
         var curDuration = scope.curAudio.cur_duration;
@@ -246,6 +264,7 @@ playerApp.directive('player', function ($timeout, $interval) {
       });
 
       function changeScrollPosition(value) {
+        scope.loopStyle = 0.6;
         var heightItem = 40;
         var defaultScrollItem = 4;
         var lengthAllAudio = scope.props.length;
@@ -255,7 +274,7 @@ playerApp.directive('player', function ($timeout, $interval) {
         } else if (valChange === (heightItem * lengthAllAudio) - (heightItem * defaultScrollItem)) {
           valChange = -160;
         }
-        $(".nano").nanoScroller({ scrollTop: valChange });
+        $(".nano").nanoScroller({scrollTop: valChange});
       }
 
       function runningString(str) {
@@ -322,10 +341,18 @@ playerApp.directive('player', function ($timeout, $interval) {
 
       bindButtons();
       function bindButtons() {
-        Mousetrap.bind('ctrl+alt+right', function() { scope.nextPlay(true) });
-        Mousetrap.bind('ctrl+alt+left', function() { scope.nextPlay() });
-        Mousetrap.bind('ctrl+alt+up', function() { scope.changeVolume('up') });
-        Mousetrap.bind('ctrl+alt+down', function() { scope.changeVolume('down') });
+        Mousetrap.bind('ctrl+alt+right', function () {
+          scope.nextPlay(true)
+        });
+        Mousetrap.bind('ctrl+alt+left', function () {
+          scope.nextPlay()
+        });
+        Mousetrap.bind('ctrl+alt+up', function () {
+          scope.changeVolume('up')
+        });
+        Mousetrap.bind('ctrl+alt+down', function () {
+          scope.changeVolume('down')
+        });
       }
 
     }
