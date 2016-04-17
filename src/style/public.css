@@ -8,7 +8,6 @@ body {
   background-blend-mode: multiply;
   background-size: cover;
   background-position: center center;
-  border: 3px solid #bd9053;
   border-radius: 5px;
   overflow: hidden;
   position: absolute;
@@ -187,7 +186,7 @@ body {
 }
 .player-loading-bar .ico-loop {
   right: 81px;
-  bottom: 17.5px;
+  bottom: 23.5px;
 }
 .rangeslider--horizontal {
   width: 150px;
@@ -211,7 +210,7 @@ body {
   border-radius: 50%;
   background: #f5b65a;
   position: absolute;
-  bottom: 44px;
+  bottom: 49px;
   margin-left: 27px;
   cursor: pointer;
 }
