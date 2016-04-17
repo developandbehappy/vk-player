@@ -11,4 +11,6 @@ playerApp.controller('playerCtrl', function ($scope, $http, $timeout, $window, $
   VK.init({
     apiId: '5381754'
   });
+
+
 });
