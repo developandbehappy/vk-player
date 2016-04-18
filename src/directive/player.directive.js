@@ -85,7 +85,7 @@ playerApp.directive('player', function ($timeout, $interval) {
             interval = $interval(function () {
               scope.curAudio.cur_duration = sound.position();
               setBkgCurPosition();
-            }, 50);
+            }, 1000 / 60);
             allAudio.push(sound);
           }
         }
@@ -152,7 +152,7 @@ playerApp.directive('player', function ($timeout, $interval) {
         interval = $interval(function () {
           scope.curAudio.cur_duration = sound.position();
           setBkgCurPosition();
-        }, 50);
+        }, 1000 / 60);
         allAudio.push(sound);
       };
 
@@ -161,6 +161,8 @@ playerApp.directive('player', function ($timeout, $interval) {
         if (!scope.nextPlayStat || _.isEmpty(allAudio)) {
           return false;
         }
+        $('#player').css("background-image", "none");
+        $('.player-logo').css("background", "none");
         scope.nextPlayStat = false;
         scope.curAudio.pause = false;
         var curPlay = _.last(allAudio);
@@ -190,7 +192,7 @@ playerApp.directive('player', function ($timeout, $interval) {
         interval = $interval(function () {
           scope.curAudio.cur_duration = sound.position();
           setBkgCurPosition();
-        }, 100);
+        }, 1000 / 60);
         allAudio.push(sound);
         $timeout(function () {
           scope.nextPlayStat = true;
