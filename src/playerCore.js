@@ -9,6 +9,7 @@ var playerCore = function (id, src, volume, end) {
     play.src = self.src;
     play.volume = self.volume;
     play.addEventListener('ended', function () {
+      console.log('123', 123);
       self.onend();
     });
     return play;
@@ -31,6 +32,7 @@ var playerCore = function (id, src, volume, end) {
   /**
    * pause curAudio
    */
+
   this.pause = function () {
     player.pause();
   };
@@ -82,5 +84,4 @@ var playerCore = function (id, src, volume, end) {
     player.volume = volumeCur;
   };
 };
-
 
