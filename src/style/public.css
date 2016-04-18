@@ -84,7 +84,7 @@ body {
   color: #f4ac43;
 }
 #player .player-logo-wrapper {
-  width: 197.5px;
+  width: 200.5px;
   height: 200px;
   z-index: 1;
   border-bottom-right-radius: 100%;
@@ -188,6 +188,10 @@ body {
   right: 81px;
   bottom: 23.5px;
 }
+.player-loading-bar .ico-download {
+  right: 115px;
+  bottom: 23.5px;
+}
 .rangeslider--horizontal {
   width: 150px;
   height: 5px;
@@ -210,7 +214,7 @@ body {
   border-radius: 50%;
   background: #f5b65a;
   position: absolute;
-  bottom: 49px;
+  bottom: 50px;
   margin-left: 27px;
   cursor: pointer;
 }

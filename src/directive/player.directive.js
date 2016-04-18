@@ -9,9 +9,9 @@ playerApp.directive('player', function ($timeout, $interval) {
     link: function (scope) {
       var interval = '';
       var intervalCutName = '';
+      var nanoInterval = '';
       var allAudio = [];
       var audioList = [];
-
       scope.nextPlayStat = true;
       scope.auth = false;
       scope.loopStyle = 0.6;
@@ -36,6 +36,7 @@ playerApp.directive('player', function ($timeout, $interval) {
         if (response.session) {
           scope.auth = true;
           getAudio();
+          init();
         }
       });
 
@@ -43,6 +44,7 @@ playerApp.directive('player', function ($timeout, $interval) {
         scope.auth = false;
         scope.props = [];
         VK.Auth.logout();
+        logout();
       };
 
       scope.login = function () {
@@ -50,6 +52,7 @@ playerApp.directive('player', function ($timeout, $interval) {
           if (res.session) {
             scope.auth = true;
             getAudio();
+            init();
           }
         }, 65536 + 8);
       };
@@ -84,7 +87,6 @@ playerApp.directive('player', function ($timeout, $interval) {
               setBkgCurPosition();
             }, 50);
             allAudio.push(sound);
-            console.log('allAudio', allAudio);
           }
         }
       };
@@ -111,6 +113,7 @@ playerApp.directive('player', function ($timeout, $interval) {
         if (!_.last(allAudio)) {
           return false;
         }
+        scope.curAudio.mute = false;
         var volume = scope.curAudio.volume;
         volume = Number(volume);
         if (status === 'up') {
@@ -149,7 +152,7 @@ playerApp.directive('player', function ($timeout, $interval) {
         interval = $interval(function () {
           scope.curAudio.cur_duration = sound.position();
           setBkgCurPosition();
-        }, 100);
+        }, 50);
         allAudio.push(sound);
       };
 
@@ -213,13 +216,22 @@ playerApp.directive('player', function ($timeout, $interval) {
         }
       };
 
+      scope.downloadCurAudio = function () {
+        var curAudio = _.last(allAudio);
+        var link = document.createElement('a');
+        link.setAttribute('href', curAudio.src);
+        link.setAttribute('download', 'download');
+        link.click();
+      };
+
 
       function setBkgCurPosition() {
+        $interval.cancel(nanoInterval);
         var duration = scope.curAudio.duration;
         var curDuration = scope.curAudio.cur_duration;
         var getProcent = 100 - (curDuration * 100) / duration;
-        var curDeg = (171 + (getProcent)) + 'deg';
-        scope.curAudio.style = 'background: linear-gradient(' + curDeg + ', #33272e ' + getProcent + '%, #edb159 0);';
+        var curDeg = (174 + (getProcent)) + 'deg';
+        scope.curAudio.style = 'background: linear-gradient(' + curDeg + ', #33272e ' + getProcent + '%, #edb159 ' + (getProcent + 0.5) + '%);';
       }
 
 
@@ -231,6 +243,27 @@ playerApp.directive('player', function ($timeout, $interval) {
         });
         audioItem.active = true;
         return audioItem;
+      }
+
+      function logout() {
+        var curAudio = _.last(allAudio);
+        if (curAudio) {
+          _.last(allAudio).pause();
+        }
+        $interval.cancel(intervalCutName);
+        $interval.cancel(interval);
+        allAudio = [];
+        scope.curAudio.src = '';
+        scope.curAudio.mute = false;
+        scope.curAudio.name = '';
+        scope.curAudio.pause = true;
+        scope.curAudio.author = '';
+        scope.curAudio.duration = 0;
+        scope.curAudio.photo_author = '/images/default_avatar.jpg';
+        $timeout(function () {
+          scope.curAudio.cur_duration = 0;
+        }, 500);
+        setBkgCurPosition();
       }
 
       function setCurrentAudioData(audioItem) {
@@ -295,20 +328,19 @@ playerApp.directive('player', function ($timeout, $interval) {
       function init() {
         // Временно гавнокодим, т.к не знаю как отследить прием данных с вк.. Его эти VK функции ужс нет ни then, finally
         var nano = $(".nano");
-        $interval(function () {
+        nanoInterval = $interval(function () {
           nano.nanoScroller({
             sliderMaxHeight: 10,
             alwaysVisible: true
           });
           nano.nanoScroller();
-        }, 100);
+        }, 500);
       }
 
       function getAudio() {
         VK.Api.call('audio.get', {}, function (res) {
           scope.props = res.response;
         });
-        init();
       }
 
       function getArtistPhoto() {
