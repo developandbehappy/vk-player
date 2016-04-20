@@ -9,7 +9,7 @@
             <ul>
                 <li ng-click="nextPlay(false)" class="player-btn player-btn-backward" title="Предыдущий трек CTRL+ALT+LEFT">
                     <i class="fa fa-step-backward"></i></li>
-                <li ng-click="pauseAndPlay()" class="player-btn player-btn-middle" title="{'Играть': curAudio.pause, 'Пауза': !curAudio.pause}">
+                <li ng-click="pauseAndPlay()" class="player-btn player-btn-middle" title="{{ curAudio.pause? 'Играть CTRL+ALT+SPACE' : 'Пауза CTRL+ALT+SPACE' }}">
                     <i ng-class="{'fa fa-stop': curAudio.stop, 'fa fa-play': curAudio.pause, 'fa fa-pause': !curAudio.pause}"></i>
                 </li>
                 <li ng-click="nextPlay(true)" class="player-btn player-btn-forward" title="Следующий трек CTRL+ALT+RIGHT">
@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <div class="player-setting-bar">
+        <div class="player-setting-bar" title="Громкость CTRL+ALT+↑ или ↓">
             <div class="player-volume">
                 <i ng-click="mute()" ng-class="{'fa fa-volume-up': curAudio.volume >= 0.6 && !curAudio.mute, 'fa fa-volume-down': curAudio.volume <= 0.6 && curAudio.volume != 0 && !curAudio.mute, 'fa fa-volume-off': curAudio.volume == 0 || curAudio.mute}"
                    id="ico-volume"></i>
