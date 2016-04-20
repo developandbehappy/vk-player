@@ -10,7 +10,7 @@ playerApp.directive('player', function ($timeout, $interval) {
       var interval = '';
       var intervalCutName = '';
       var nanoInterval = '';
-      var allAudio = [];
+      var currentAudio = [];
       var audioList = [];
       scope.nextPlayStat = true;
       scope.auth = false;
@@ -69,12 +69,12 @@ playerApp.directive('player', function ($timeout, $interval) {
         }
         scope.curAudio.pause = !scope.curAudio.pause;
         if (scope.curAudio.pause) {
-          if (!_.isEmpty(allAudio)) {
-            _.last(allAudio).pause();
+          if (!_.isEmpty(currentAudio)) {
+            currentAudio.pause();
           }
         } else {
-          if (!_.isEmpty(allAudio)) {
-            _.last(allAudio).play();
+          if (!_.isEmpty(currentAudio)) {
+            currentAudio.play();
           } else {
             var firstEl = _.first(scope.props);
             addActiveClassItem(firstEl);
@@ -86,14 +86,14 @@ playerApp.directive('player', function ($timeout, $interval) {
               scope.curAudio.cur_duration = sound.position();
               setBkgCurPosition();
             }, 1000 / 60);
-            allAudio.push(sound);
+            currentAudio = sound;
           }
         }
       };
 
 
       scope.mute = function () {
-        var curAudio = _.last(allAudio);
+        var curAudio = currentAudio;
         var curVolume = scope.curAudio.volume;
         if (!curAudio || curVolume == 0) {
           return false;
@@ -110,7 +110,7 @@ playerApp.directive('player', function ($timeout, $interval) {
 
 
       scope.changeVolume = function (status) {
-        if (!_.last(allAudio)) {
+        if (!currentAudio) {
           return false;
         }
         scope.curAudio.mute = false;
@@ -126,7 +126,7 @@ playerApp.directive('player', function ($timeout, $interval) {
           return false;
         }
         rangeVolume.val(volume).change();
-        _.last(allAudio).volume(volume);
+        currentAudio.volume(volume);
       };
 
       scope.startAudio = function (audioItem) {
@@ -137,7 +137,7 @@ playerApp.directive('player', function ($timeout, $interval) {
         scope.curAudio.pause = false;
         audioList = audioItem.url;
         audioItem = addActiveClassItem(audioItem);
-        if (!_.isEmpty(allAudio)) {
+        if (!_.isEmpty(currentAudio)) {
           //stopAll();
           scope.curAudio.cur_duration = 0;
         }
@@ -153,19 +153,19 @@ playerApp.directive('player', function ($timeout, $interval) {
           scope.curAudio.cur_duration = sound.position();
           setBkgCurPosition();
         }, 1000 / 60);
-        allAudio.push(sound);
+        currentAudio = sound;
       };
 
       scope.nextPlay = function (status) {
         scope.curAudio.cur_duration = 0;
-        if (!scope.nextPlayStat || _.isEmpty(allAudio)) {
+        if (!scope.nextPlayStat || _.isEmpty(currentAudio)) {
           return false;
         }
         $('#player').css("background-image", "none");
         $('.player-logo').css("background", "none");
         scope.nextPlayStat = false;
         scope.curAudio.pause = false;
-        var curPlay = _.last(allAudio);
+        var curPlay = currentAudio;
         var sizeProps = _.size(scope.props);
         var indexSound = 0;
         _.each(scope.props, function (item, index) {
@@ -193,7 +193,7 @@ playerApp.directive('player', function ($timeout, $interval) {
           scope.curAudio.cur_duration = sound.position();
           setBkgCurPosition();
         }, 1000 / 60);
-        allAudio.push(sound);
+        currentAudio = sound;
         $timeout(function () {
           scope.nextPlayStat = true;
         }, 400);
@@ -203,7 +203,7 @@ playerApp.directive('player', function ($timeout, $interval) {
 
 
       scope.loop = function () {
-        var curAudio = _.last(allAudio);
+        var curAudio = currentAudio;
         if (!curAudio) {
           return false
         }
@@ -219,7 +219,7 @@ playerApp.directive('player', function ($timeout, $interval) {
       };
 
       scope.downloadCurAudio = function () {
-        var curAudio = _.last(allAudio);
+        var curAudio = currentAudio;
         var link = document.createElement('a');
         link.setAttribute('href', curAudio.src);
         link.setAttribute('download', 'download');
@@ -248,13 +248,12 @@ playerApp.directive('player', function ($timeout, $interval) {
       }
 
       function logout() {
-        var curAudio = _.last(allAudio);
-        if (curAudio) {
-          _.last(allAudio).pause();
+        if (currentAudio) {
+          currentAudio.pause();
         }
         $interval.cancel(intervalCutName);
         $interval.cancel(interval);
-        allAudio = [];
+        currentAudio = [];
         scope.curAudio.src = '';
         scope.curAudio.mute = false;
         scope.curAudio.name = '';
@@ -381,6 +380,20 @@ playerApp.directive('player', function ($timeout, $interval) {
         Mousetrap.bind('ctrl+alt+down', function () {
           scope.changeVolume('down')
         });
+        Mousetrap.bind('ctrl+alt+space', function () {
+          scope.pauseAndPlay();
+        });
+      }
+      saveAndGetDataFromLocalStorage('save');
+      function saveAndGetDataFromLocalStorage(type) {
+        if (type === 'save') {
+          var storage = JSON.stringify(scope.curAudio);
+          localStorage.setItem('playerData', storage);
+          console.log('storage', storage);
+        }
+        if (type === 'read') {
+
+        }
       }
 
     }
