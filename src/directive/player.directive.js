@@ -76,12 +76,25 @@ playerApp.directive('player', function ($timeout, $interval) {
           if (!_.isEmpty(currentAudio)) {
             currentAudio.play();
           } else {
+            var localStorageData = JSON.parse(saveAndGetDataFromLocalStorage('read'));
             var firstEl = _.first(scope.props);
             addActiveClassItem(firstEl);
+            if (localStorageData) {
+              _.each(scope.props, function (item) {
+                if (item.url === localStorageData.src) {
+                  addActiveClassItem(item);
+                }
+              });
+            }
             runningString(scope.curAudio.name);
             var sound = new playerCore('playerCore', scope.curAudio.src, scope.curAudio.volume, nextPlay);
+            if (scope.curAudio.cur_duration) {
+              sound.setTime(scope.curAudio.cur_duration);
+              scope.curAudio.pause = false;
+            } else {
+              getArtistPhoto();
+            }
             sound.play();
-            getArtistPhoto();
             interval = $interval(function () {
               scope.curAudio.cur_duration = sound.position();
               setBkgCurPosition();
@@ -110,7 +123,8 @@ playerApp.directive('player', function ($timeout, $interval) {
 
 
       scope.changeVolume = function (status) {
-        if (!currentAudio) {
+        if (_.isEmpty(currentAudio)) {
+          rangeVolume.val(scope.curAudio.volume).change();
           return false;
         }
         scope.curAudio.mute = false;
@@ -187,7 +201,6 @@ playerApp.directive('player', function ($timeout, $interval) {
         addActiveClassItem(scope.props[indexSound]);
         var sound = new playerCore('playerCore', scope.curAudio.src, scope.curAudio.volume, nextPlay);
         sound.play();
-
         getArtistPhoto();
         interval = $interval(function () {
           scope.curAudio.cur_duration = sound.position();
@@ -229,6 +242,7 @@ playerApp.directive('player', function ($timeout, $interval) {
 
       function setBkgCurPosition() {
         $interval.cancel(nanoInterval);
+        saveAndGetDataFromLocalStorage('save');
         var duration = scope.curAudio.duration;
         var curDuration = scope.curAudio.cur_duration;
         var getProcent = 100 - (curDuration * 100) / duration;
@@ -263,6 +277,7 @@ playerApp.directive('player', function ($timeout, $interval) {
         scope.curAudio.photo_author = '/images/default_avatar.jpg';
         $timeout(function () {
           scope.curAudio.cur_duration = 0;
+          localStorage.setItem('playerData', '');
         }, 500);
         setBkgCurPosition();
       }
@@ -335,6 +350,19 @@ playerApp.directive('player', function ($timeout, $interval) {
             alwaysVisible: true
           });
           nano.nanoScroller();
+          if (scope.curAudio.src) {
+            _.each(scope.props, function (item, index) {
+              if (item.url === scope.curAudio.src) {
+                changeScrollPosition(index);
+                scope.changeVolume();
+                scope.props = _.map(scope.props, function (item) {
+                  item.active = false;
+                  return item
+                });
+                item.active = true;
+              }
+            });
+          }
         }, 500);
       }
 
@@ -342,6 +370,8 @@ playerApp.directive('player', function ($timeout, $interval) {
         VK.Api.call('audio.get', {}, function (res) {
           scope.props = res.response;
         });
+        scope.curAudio = JSON.parse(saveAndGetDataFromLocalStorage('read'));
+        scope.curAudio.pause = true;
       }
 
       function getArtistPhoto() {
@@ -384,15 +414,14 @@ playerApp.directive('player', function ($timeout, $interval) {
           scope.pauseAndPlay();
         });
       }
-      saveAndGetDataFromLocalStorage('save');
+
       function saveAndGetDataFromLocalStorage(type) {
         if (type === 'save') {
           var storage = JSON.stringify(scope.curAudio);
           localStorage.setItem('playerData', storage);
-          console.log('storage', storage);
         }
         if (type === 'read') {
-
+          return localStorage.getItem('playerData')
         }
       }
 

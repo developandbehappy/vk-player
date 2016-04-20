@@ -9,7 +9,6 @@ var playerCore = function (id, src, volume, end) {
     play.src = self.src;
     play.volume = self.volume;
     play.addEventListener('ended', function () {
-      console.log('123', 123);
       self.onend();
     });
     return play;
@@ -82,6 +81,14 @@ var playerCore = function (id, src, volume, end) {
       return self.volume;
     }
     player.volume = volumeCur;
+  };
+
+  /**
+   * setTime take seconds
+   * @param time
+   */
+  this.setTime = function (time) {
+    player.currentTime = time;
   };
 };
 
