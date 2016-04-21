@@ -1,18 +1,17 @@
 <div id="player" style="background-image: url('{{ curAudio.photo_author }}')">
     <div class="col-xs-6 player-left-side">
         <audio src="" id="playerCore"></audio>
-        <div class="player-logo-wrapper" style="{{curAudio.style}}">
-
-            <div class="player-logo" style="background: url('{{ curAudio.photo_author }}') no-repeat center center;"></div>
+        <div class="player-logo-wrapper" style="{{curAudio.style}}" title="Перемотать ALT+ ← или →">
+            <div class="player-logo" style="background: url('{{ curAudio.photo_author }}') no-repeat center center;" title=""></div>
         </div>
         <div class="player-buttons">
             <ul>
-                <li ng-click="nextPlay(false)" class="player-btn player-btn-backward" title="Предыдущий трек CTRL+ALT+LEFT">
+                <li ng-click="nextPlay(false)" class="player-btn player-btn-backward" title="Предыдущий трек CTRL+ALT+ ←">
                     <i class="fa fa-step-backward"></i></li>
                 <li ng-click="pauseAndPlay()" class="player-btn player-btn-middle" title="{{ curAudio.pause? 'Играть CTRL+ALT+SPACE' : 'Пауза CTRL+ALT+SPACE' }}">
                     <i ng-class="{'fa fa-stop': curAudio.stop, 'fa fa-play': curAudio.pause, 'fa fa-pause': !curAudio.pause}"></i>
                 </li>
-                <li ng-click="nextPlay(true)" class="player-btn player-btn-forward" title="Следующий трек CTRL+ALT+RIGHT">
+                <li ng-click="nextPlay(true)" class="player-btn player-btn-forward" title="Следующий трек CTRL+ALT+ →">
                     <i class="fa fa-step-forward"></i>
                 </li>
             </ul>
