@@ -18,7 +18,6 @@ body {
   top: 0;
   -webkit-user-select: none;
   -moz-user-select: none;
-  transition: all 0.3s ease-in;
 }
 #player .nano-pane {
   background: rgba(141, 196, 186, 0.3);
@@ -62,7 +61,6 @@ body {
   color: #f5b75b;
   text-align: center;
   line-height: 40px;
-  transition: all 0.2s ease-in-out;
   position: relative;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
   cursor: pointer;
@@ -95,7 +93,6 @@ body {
   width: 97%;
   height: 97%;
   background-blend-mode: multiply;
-  transition: all 0.3s ease-in;
   border-bottom-right-radius: 100%;
   background-size: cover !important;
 }
