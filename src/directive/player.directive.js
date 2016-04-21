@@ -26,7 +26,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         pause: true,
         stop: false,
         volume: 0.5,
-        photo_author: '/images/default_avatar.jpg',
+        photo_author: '/vk-player/images/default_avatar.jpg',
         wrapper_author: '',
         style: '',
         mute: false,
@@ -287,7 +287,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         scope.curAudio.pause = true;
         scope.curAudio.author = '';
         scope.curAudio.duration = 0;
-        scope.curAudio.photo_author = '/images/default_avatar.jpg';
+        scope.curAudio.photo_author = '/vk-player/images/default_avatar.jpg';
         $timeout(function () {
           scope.curAudio.cur_duration = 0;
           localStorage.setItem('playerData', '');
@@ -400,7 +400,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           var firstRandom = _.first(_.sortBy(dataWithImage, function () {
             return 0.5 * Math.random();
           }));
-          scope.curAudio.photo_author = _.isEmpty(firstRandom) ? '/images/default_avatar.jpg' : firstRandom.photo_big;
+          scope.curAudio.photo_author = _.isEmpty(firstRandom) ? '/vk-player/images/default_avatar.jpg' : firstRandom.photo_big;
         });
       }
 
