@@ -11,7 +11,6 @@ body {
   background-blend-mode: multiply;
   background-size: cover;
   background-position: center center;
-  //border: 3px solid #bd9053;
   border-radius: 5px;
   overflow: hidden;
   position: absolute;
@@ -22,24 +21,19 @@ body {
   top: 0;
   -webkit-user-select: none;
   -moz-user-select: none;
-  transition: all .3s ease-in;
-
   .nano-pane {
     background: rgba(141, 196, 186, .3);
     border-radius: 0;
     width: 5px;
     margin-right: 8px;
-    //box-shadow: 0 0 1px #000;
     .nano-slider {
       width: 10px;
       height: 10px !important;
       border-radius: 50%;
       background: #f5b65a;
       position: absolute;
-      //box-shadow: 0 0 1px #000;
       right: -3.5px;
       cursor: pointer;
-
     }
   }
 
@@ -69,10 +63,9 @@ body {
         color: #f5b75b;
         text-align: center;
         line-height: 40px;
-        transition: all .2s ease-in-out;
+        //transition: all .2s ease-in-out;
         position: relative;
         box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);
-        //text-shadow: 0 1px #000;
         cursor: pointer;
         &.player-btn-forward {
           right: 15px;
@@ -105,7 +98,7 @@ body {
       width: 97%;
       height: 97%;
       background-blend-mode: multiply;
-      transition: all .3s ease-in;
+      //transition: all .3s ease-in;
       border-bottom-right-radius: 100%;
       background-size: cover !important;
     }
@@ -151,13 +144,11 @@ body {
       font-size: 12px;
       padding: 20px 0;
       line-height: 3px;
-      //text-shadow: 0 1px #000;
       cursor: pointer;
       &:hover, &.players-audio-item-active {
         background: rgba(87, 67, 57, .6);
-        //border-left: 1px solid #d49e56;
         .players-item-name {
-          //padding: 0 0 0 4px;
+
         }
       }
     }
@@ -226,7 +217,6 @@ body {
   border-radius: 5px;
   margin-bottom: 2.5px;
   overflow: hidden;
-  //box-shadow: 0 0 0 1px #000;
   .rangeslider, .rangeslider__fill {
     width: 100px;
     height: 100%;
@@ -238,12 +228,8 @@ body {
     border-radius: 50%;
     background: #f5b65a;
     position: absolute;
-    //box-shadow: 0 0 0 1px #000;
-    //right: 65px;
     bottom: 50px;
     margin-left: 27px;
     cursor: pointer;
   }
-
-
 }

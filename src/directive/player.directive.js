@@ -34,20 +34,15 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       };
 
       if (token) {
-        var url = 'https://api.vk.com/method/audio.get?access_token=' + token + '&callback=JSON_CALLBACK';
-        $http.jsonp(url).then(function (res) {
-          scope.props = res.data.response;
-          scope.auth = true;
-          getAudio();
-          init();
-        });
+        getAudio();
       }
 
       scope.logout = function () {
         scope.auth = false;
         scope.props = [];
-        VK.Auth.logout();
-        logout();
+        VK.Auth.logout(function () {
+          logout();
+        });
       };
 
       scope.login = function () {
@@ -56,7 +51,6 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
             localStorage.setItem('playerToken', res.session.sid);
             scope.auth = true;
             getAudio();
-            init();
           }
         }, 65536 + 8);
       };
@@ -80,10 +74,10 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           if (!_.isEmpty(currentAudio)) {
             currentAudio.play();
           } else {
-            var localStorageData = JSON.parse(saveAndGetDataFromLocalStorage('read'));
             var firstEl = _.first(scope.props);
             addActiveClassItem(firstEl);
-            if (localStorageData) {
+            if (saveAndGetDataFromLocalStorage('read')) {
+              var localStorageData = JSON.parse(saveAndGetDataFromLocalStorage('read'));
               _.each(scope.props, function (item) {
                 if (item.artist === localStorageData.author && item.duration === localStorageData.duration) {
                   addActiveClassItem(item);
@@ -176,8 +170,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
 
       scope.nextPlay = function (status) {
         scope.curAudio.cur_duration = 0;
-        var localStorageData = JSON.parse(saveAndGetDataFromLocalStorage('read'));
-        if (!scope.nextPlayStat || !localStorageData) {
+        if (!scope.nextPlayStat) {
           return false;
         }
         $('#player').css("background-image", "none");
@@ -194,11 +187,17 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
             }
           });
         } else {
-          _.each(scope.props, function (item, index) {
-            if (item.artist === localStorageData.author && item.duration === localStorageData.duration) {
-              indexSound = index;
-            }
-          });
+          var localStorageData = saveAndGetDataFromLocalStorage('read');
+          if (localStorageData) {
+            localStorageData = JSON.parse(localStorageData);
+            _.each(scope.props, function (item, index) {
+              if (item.artist === localStorageData.author && item.duration === localStorageData.duration) {
+                indexSound = index;
+              }
+            });
+          } else {
+            indexSound = 0;
+          }
         }
         if (status) {
           indexSound++;
@@ -275,7 +274,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       }
 
       function logout() {
-        if (currentAudio) {
+        if (currentAudio && scope.curAudio.pause === false) {
           currentAudio.pause();
         }
         $interval.cancel(intervalCutName);
@@ -288,11 +287,11 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         scope.curAudio.author = '';
         scope.curAudio.duration = 0;
         scope.curAudio.photo_author = '/vk-player/images/default_avatar.jpg';
+        scope.curAudio.cur_duration = 0;
         $timeout(function () {
-          scope.curAudio.cur_duration = 0;
           localStorage.setItem('playerData', '');
           localStorage.setItem('playerToken', '');
-        }, 500);
+        }, 400);
         setBkgCurPosition();
       }
 
@@ -327,7 +326,9 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         } else if (valChange === (heightItem * lengthAllAudio) - (heightItem * defaultScrollItem)) {
           valChange = -160;
         }
-        $(".nano").nanoScroller({scrollTop: valChange});
+        $(".nano").nanoScroller({
+          scrollTop: valChange
+        });
       }
 
       function runningString(str) {
@@ -356,37 +357,40 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       }
 
       function init() {
-        // Временно гавнокодим, т.к не знаю как отследить прием данных с вк.. Его эти VK функции ужс нет ни then, finally
         var nano = $(".nano");
-        nanoInterval = $interval(function () {
-          nano.nanoScroller({
-            sliderMaxHeight: 10,
-            alwaysVisible: true
+        nano.nanoScroller({
+          sliderMaxHeight: 10,
+          alwaysVisible: true
+        });
+        nano.nanoScroller();
+        if (scope.curAudio.src) {
+          _.each(scope.props, function (item, index) {
+            if (item.artist === scope.curAudio.author && item.duration === scope.curAudio.duration) {
+              changeScrollPosition(index);
+              scope.changeVolume();
+              scope.props = _.map(scope.props, function (item) {
+                item.active = false;
+                return item
+              });
+              item.active = true;
+            }
           });
-          //$(".nano").nanoScroller({ sliderMinHeight: 40 });
-          nano.nanoScroller();
-          if (scope.curAudio.src) {
-            _.each(scope.props, function (item, index) {
-              if (item.artist === scope.curAudio.author && item.duration === scope.curAudio.duration) {
-                changeScrollPosition(index);
-                scope.changeVolume();
-                scope.props = _.map(scope.props, function (item) {
-                  item.active = false;
-                  return item
-                });
-                item.active = true;
-              }
-            });
-          }
-        }, 100);
+        }
       }
 
       function getAudio() {
-        VK.Api.call('audio.get', {}, function (res) {
-          scope.props = res.response;
+        var url = 'https://api.vk.com/method/audio.get?access_token=' + token + '&callback=JSON_CALLBACK';
+        $http.jsonp(url).then(function (res) {
+          scope.props = res.data.response;
+          scope.auth = true;
+          $timeout(function () {
+            init();
+          }, 100);
         });
-        scope.curAudio = JSON.parse(saveAndGetDataFromLocalStorage('read'));
-        scope.curAudio.pause = true;
+        if (saveAndGetDataFromLocalStorage('read')) {
+          scope.curAudio = JSON.parse(saveAndGetDataFromLocalStorage('read'));
+          scope.curAudio.pause = true;
+        }
       }
 
       function getArtistPhoto() {
