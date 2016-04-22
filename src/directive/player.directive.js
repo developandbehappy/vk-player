@@ -9,10 +9,11 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
     link: function (scope) {
       var interval = '';
       var intervalCutName = '';
-      var nanoInterval = '';
       var currentAudio = [];
       var audioList = [];
       var token = localStorage.getItem('playerToken');
+      var playerId = $('#player');
+      var playerLogo = $('.player-logo');
       scope.nextPlayStat = true;
       scope.auth = false;
       scope.loopStyle = 0.6;
@@ -33,6 +34,12 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         loop: false
       };
 
+      playerId.css({
+        'background-image': 'url(' + scope.curAudio.photo_author + ')'
+      });
+      playerLogo.css({
+        'background': 'url(' + scope.curAudio.photo_author + ') no-repeat center center'
+      });
       if (token) {
         getAudio();
       }
@@ -48,7 +55,6 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         VK.Auth.login(function (res) {
           if (res.session) {
             localStorage.setItem('playerToken', res.session.sid);
-            scope.auth = true;
             getAudio();
           }
         }, 65536 + 8);
@@ -57,7 +63,12 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       scope.randomTrack = function () {
         scope.props = _.sortBy(scope.props, function () {
           return 0.5 * Math.random();
-        })
+        });
+        _.each(scope.props, function (item, index) {
+          if (item.url === scope.curAudio.src) {
+            changeScrollPosition(index);
+          }
+        });
       };
 
       scope.pauseAndPlay = function () {
@@ -84,6 +95,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
               });
             }
             runningString(scope.curAudio.name);
+            $interval.cancel(interval);
             var sound = new playerCore('playerCore', scope.curAudio.src, scope.curAudio.volume, nextPlay);
             if (scope.curAudio.cur_duration) {
               sound.setTime(scope.curAudio.cur_duration);
@@ -128,10 +140,10 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         var volume = scope.curAudio.volume;
         volume = Number(volume);
         if (status === 'up') {
-          volume += 0.05;
+          volume += 0.02;
         }
         if (status === 'down') {
-          volume -= 0.05;
+          volume -= 0.02;
         }
         if (volume > 1 || volume < 0) {
           return false;
@@ -157,6 +169,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         scope.curAudio.duration = audioItem.duration;
         getArtistPhoto();
         $interval.cancel(intervalCutName);
+        $interval.cancel(interval);
         runningString(scope.curAudio.name);
         var sound = new playerCore('playerCore', audioList, scope.curAudio.volume, nextPlay);
         sound.play();
@@ -172,8 +185,6 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         if (!scope.nextPlayStat) {
           return false;
         }
-        $('#player').css("background-image", "none");
-        $('.player-logo').css("background", "none");
         scope.nextPlayStat = false;
         scope.curAudio.pause = false;
         var curPlay = currentAudio;
@@ -209,6 +220,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         } else if (indexSound > sizeProps - 1 && indexSound > 0) {
           indexSound = 0;
         }
+        $interval.cancel(interval);
         addActiveClassItem(scope.props[indexSound]);
         var sound = new playerCore('playerCore', scope.curAudio.src, scope.curAudio.volume, nextPlay);
         sound.play();
@@ -258,9 +270,6 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         var getProcent = 100 - (curDuration * 100) / duration;
         var curDeg = (174 + (getProcent)) + 'deg';
         scope.curAudio.style = 'background: linear-gradient(' + curDeg + ', #33272e ' + getProcent + '%, #edb159 ' + (getProcent + 0.5) + '%);';
-        if (localStorage.getItem('playerToken') === '') {
-          logout();
-        }
       }
 
 
@@ -290,7 +299,6 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         scope.curAudio.photo_author = '/vk-player/images/default_avatar.jpg';
         scope.curAudio.cur_duration = 0;
         scope.curAudio.style = '';
-        //setBkgCurPosition();
         localStorage.setItem('playerData', '');
         localStorage.setItem('playerToken', '');
       }
@@ -381,6 +389,10 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       function getAudio() {
         var url = 'https://api.vk.com/method/audio.get?access_token=' + token + '&callback=JSON_CALLBACK';
         $http.jsonp(url).then(function (res) {
+          if (res.data.error === '5') {
+            scope.login();
+            return false;
+          }
           scope.props = res.data.response;
           scope.auth = true;
           $timeout(function () {
@@ -396,6 +408,11 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       function getArtistPhoto() {
         var url = 'https://api.vk.com/method/groups.search?q=' + scope.curAudio.author + '&sort=2&count=20&access_token=' + token + '&callback=JSON_CALLBACK';
         $http.jsonp(url).then(function (res) {
+
+          if (res.data.error || res.data.response[0] === 0) {
+            scope.curAudio.photo_author = '/images/default_avatar.jpg';
+            return false;
+          }
           var dataWithImage = _.filter(res.data.response, function (item) {
             return item.photo_big;
           }).filter(function (item) {
