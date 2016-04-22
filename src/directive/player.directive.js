@@ -55,7 +55,9 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         VK.Auth.login(function (res) {
           if (res.session) {
             localStorage.setItem('playerToken', res.session.sid);
-            getAudio();
+            $timeout(function () {
+              getAudio();
+            }, 300);
           }
         }, 65536 + 8);
       };
@@ -140,7 +142,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         var volume = scope.curAudio.volume;
         volume = Number(volume);
         if (status === 'up') {
-          volume += 0.02;
+          volume += 0.05;
         }
         if (status === 'down') {
           volume -= 0.02;

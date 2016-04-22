@@ -16,6 +16,7 @@ body {
   left: 0;
   right: 0;
   top: 0;
+  transition: background-image 0.4s;
   -webkit-user-select: none;
   -moz-user-select: none;
 }
@@ -94,6 +95,7 @@ body {
   height: 97%;
   background-blend-mode: multiply;
   border-bottom-right-radius: 100%;
+  transition: background .4s;
   background-size: cover !important;
 }
 #player .players-status-bar {
