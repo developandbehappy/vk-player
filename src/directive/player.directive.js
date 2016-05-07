@@ -17,7 +17,6 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       scope.nextPlayStat = true;
       scope.auth = false;
       scope.loopStyle = 0.6;
-
       scope.curAudio = {
         name: '',
         author: '',
@@ -414,7 +413,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         $http.jsonp(url).then(function (res) {
 
           if (res.data.error || res.data.response[0] === 0) {
-            scope.curAudio.photo_author = '/images/default_avatar.jpg';
+            scope.curAudio.photo_author = '/vk-player/images/default_avatar.jpg';
             return false;
           }
           var dataWithImage = _.filter(res.data.response, function (item) {
