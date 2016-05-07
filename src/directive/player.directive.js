@@ -11,7 +11,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       var intervalCutName = '';
       var currentAudio = [];
       var audioList = [];
-      var token = localStorage.getItem('playerToken');
+      var token = '';
       var playerId = $('#player');
       var playerLogo = $('.player-logo');
       scope.nextPlayStat = true;
@@ -55,6 +55,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         VK.Auth.login(function (res) {
           if (res.session) {
             localStorage.setItem('playerToken', res.session.sid);
+            token = res.session.sid;
             $timeout(function () {
               getAudio();
             }, 300);
@@ -163,7 +164,6 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         audioList = audioItem.url;
         audioItem = addActiveClassItem(audioItem);
         if (!_.isEmpty(currentAudio)) {
-          //stopAll();
           scope.curAudio.cur_duration = 0;
         }
         scope.curAudio.name = audioItem.title;
@@ -389,10 +389,12 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       }
 
       function getAudio() {
+        console.log('12312312312', 12312312312);
+        console.log('token', token);
         var url = 'https://api.vk.com/method/audio.get?access_token=' + token + '&callback=JSON_CALLBACK';
         $http.jsonp(url).then(function (res) {
-          if (res.data.error === '5') {
-            scope.login();
+          if (res.data.error) {
+            getAudio();
             return false;
           }
           scope.props = res.data.response;
