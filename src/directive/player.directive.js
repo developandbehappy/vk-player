@@ -388,8 +388,6 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       }
 
       function getAudio() {
-        console.log('12312312312', 12312312312);
-        console.log('token', token);
         var url = 'https://api.vk.com/method/audio.get?access_token=' + token + '&callback=JSON_CALLBACK';
         $http.jsonp(url).then(function (res) {
           if (res.data.error) {
