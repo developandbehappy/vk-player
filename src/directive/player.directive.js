@@ -11,7 +11,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       var intervalCutName = '';
       var currentAudio = [];
       var audioList = [];
-      var token = '';
+      var token = localStorage.getItem('playerToken');
       var playerId = $('#player');
       var playerLogo = $('.player-logo');
       scope.nextPlayStat = true;
