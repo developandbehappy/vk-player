@@ -55,7 +55,7 @@
     "chrome_style": false,
     "page": "index.html"
   },
-  "content_security_policy": "script-src //login.vk.com; object-src 'self'",
+  "content_security_policy": "script-src https://login.vk.com; object-src 'self'",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6ZK+lqjsur4ItlMlR4NEuHc0wLcaDzqr6dGp+QIcJU423vR4+RE4X6yUIo9vp/v2zygbyT6CZkjIT62gXWZ80xk1aHuSWT0txBfxpmrJDRF747A4sQHUcB4XOXKycGGG17v4zNCvtnHpUYLpVDfGKvPlWlGcKdYl5N7fLFAs6wZxC+VfZsS+48n3gaR8uxm+AhssPAQC1IlKyVKogDwWdD0mJ8zjiPCKgGOXtDM+/v4Mln/hjlyRz9X9bcoGcqnqAD/f9we8AbLN5IsIopIY7gCDBgs0e7kILthDse/fjkGFkBOrwdP6jQum7X+k8Zjm6DTYaLaksA7WeFGdpllXmQIDAQAB",
   "manifest_version": 2,
   "name": "VK Music Player",
