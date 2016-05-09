@@ -13,6 +13,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       var audioList = [];
       var token = localStorage.getItem('playerToken');
       var playerId = $('#player');
+      var playerLogoWrapper = $(".player-logo-wrapper");
       var playerLogo = $('.player-logo');
       scope.nextPlayStat = true;
       scope.auth = false;
@@ -155,24 +156,6 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         currentAudio.volume(volume);
       };
 
-      $(".player-logo-wrapper").on('click', function (e) {
-        if (e.target.className === 'player-logo') {
-          return false
-        }
-        var parentOffset = $(this).parent().offset();
-        var relY = e.pageY - parentOffset.top;
-        var relX = e.pageX - parentOffset.left;
-        var maxPoint = 280; // 100%
-        var value = relY;
-        var getProcent = 100 - (value * 100) / maxPoint;
-        if (relY >= 170) {
-          value = relX;
-          getProcent = (value * 100) / maxPoint;
-        }
-        var currentTime = (getProcent * scope.curAudio.duration) / 100;
-        goToFewSeconds('set', currentTime);
-      });
-
       scope.startAudio = function (audioItem) {
         if (audioItem.url == scope.curAudio.src) {
           scope.pauseAndPlay();
@@ -281,7 +264,38 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         link.setAttribute('download', 'download');
         link.click();
       };
+      
+      playerLogoWrapper.mousemove(function (e) {
+        if (e.target.className === 'player-logo') {
+          return false;
+        }
+        if (e.which == 1) {
+          setPosMusic(e, this);
+        }
+      });
 
+      playerLogoWrapper.click(function (e) {
+        if (e.target.className === 'player-logo') {
+          return false;
+        }
+        setPosMusic(e, this);
+      });
+
+
+      function setPosMusic(e, self) {
+        var parentOffset = $(self).parent().offset();
+        var relY = e.pageY - parentOffset.top;
+        var relX = e.pageX - parentOffset.left;
+        var maxPoint = 280; // 100%
+        var value = relY;
+        var getProcent = 100 - (value * 100) / maxPoint;
+        if (relY >= 170) {
+          value = relX;
+          getProcent = (value * 100) / maxPoint;
+        }
+        var currentTime = (getProcent * scope.curAudio.duration) / 100;
+        goToFewSeconds('set', currentTime);
+      }
 
       function setBkgCurPosition() {
         saveAndGetDataFromLocalStorage('save');
