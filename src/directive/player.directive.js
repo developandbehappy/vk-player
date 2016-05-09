@@ -155,6 +155,24 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         currentAudio.volume(volume);
       };
 
+      $(".player-logo-wrapper").on('click', function (e) {
+        if (e.target.className === 'player-logo') {
+          return false
+        }
+        var parentOffset = $(this).parent().offset();
+        var relY = e.pageY - parentOffset.top;
+        var relX = e.pageX - parentOffset.left;
+        var maxPoint = 280; // 100%
+        var value = relY;
+        var getProcent = 100 - (value * 100) / maxPoint;
+        if (relY >= 160) {
+          value = relX + 10;
+          getProcent = (value * 100) / maxPoint;
+        }
+        var currentTime = (getProcent * scope.curAudio.duration) / 100;
+        goToFewSeconds('set', currentTime);
+      });
+
       scope.startAudio = function (audioItem) {
         if (audioItem.url == scope.curAudio.src) {
           scope.pauseAndPlay();
@@ -270,7 +288,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         var duration = scope.curAudio.duration;
         var curDuration = scope.curAudio.cur_duration;
         var getProcent = 100 - (curDuration * 100) / duration;
-        var curDeg = (174 + (getProcent)) + 'deg';
+        var curDeg = (175 + (getProcent)) + 'deg';
         scope.curAudio.style = 'background: linear-gradient(' + curDeg + ', #33272e ' + getProcent + '%, #edb159 ' + (getProcent + 0.5) + '%);';
       }
 
@@ -427,7 +445,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         });
       }
 
-      function goToFewSeconds(type) {
+      function goToFewSeconds(type, time) {
         if (_.isEmpty(currentAudio)) {
           return false
         }
@@ -437,6 +455,9 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         }
         if (type === 'back') {
           currentAudio.setTime(curTime - 5);
+        }
+        if (type === 'set') {
+          currentAudio.setTime(time);
         }
       }
 
