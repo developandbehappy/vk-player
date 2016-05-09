@@ -165,8 +165,8 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         var maxPoint = 280; // 100%
         var value = relY;
         var getProcent = 100 - (value * 100) / maxPoint;
-        if (relY >= 160) {
-          value = relX + 10;
+        if (relY >= 170) {
+          value = relX;
           getProcent = (value * 100) / maxPoint;
         }
         var currentTime = (getProcent * scope.curAudio.duration) / 100;
