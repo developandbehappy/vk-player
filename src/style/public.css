@@ -43,7 +43,7 @@ body {
 }
 #player .player-buttons {
   position: absolute;
-  bottom: 60px;
+  bottom: 52px;
   margin: auto;
   left: 0;
   right: 0;
@@ -83,6 +83,7 @@ body {
   color: #f4ac43;
 }
 #player .player-logo-wrapper {
+  cursor: pointer;
   width: 200.5px;
   height: 200px;
   z-index: 1;
@@ -91,6 +92,7 @@ body {
   background: linear-gradient(200deg, #33272e 100%, #f5b75b 0);
 }
 #player .player-logo-wrapper .player-logo {
+  cursor: default;
   width: 97%;
   height: 97%;
   background-blend-mode: multiply;
