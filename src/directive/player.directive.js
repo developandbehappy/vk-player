@@ -13,6 +13,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       var audioList = [];
       var token = localStorage.getItem('playerToken');
       var playerId = $('#player');
+      var playerLogoWrapper = $(".player-logo-wrapper");
       var playerLogo = $('.player-logo');
       scope.nextPlayStat = true;
       scope.auth = false;
@@ -264,13 +265,43 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         link.click();
       };
 
+      playerLogoWrapper.mousemove(function (e) {
+        if (e.target.className === 'player-logo') {
+          return false;
+        }
+        if (e.which == 1) {
+          setPosMusic(e, this);
+        }
+      });
+      playerLogoWrapper.click(function (e) {
+        if (e.target.className === 'player-logo') {
+          return false;
+        }
+        setPosMusic(e, this);
+      });
+
+
+      function setPosMusic(e, self) {
+        var parentOffset = $(self).parent().offset();
+        var relY = e.pageY - parentOffset.top;
+        var relX = e.pageX - parentOffset.left;
+        var maxPoint = 280; // 100%
+        var value = relY;
+        var getProcent = 100 - (value * 100) / maxPoint;
+        if (relY >= 170) {
+          value = relX;
+          getProcent = (value * 100) / maxPoint;
+        }
+        var currentTime = (getProcent * scope.curAudio.duration) / 100;
+        goToFewSeconds('set', currentTime);
+      }
 
       function setBkgCurPosition() {
         saveAndGetDataFromLocalStorage('save');
         var duration = scope.curAudio.duration;
         var curDuration = scope.curAudio.cur_duration;
         var getProcent = 100 - (curDuration * 100) / duration;
-        var curDeg = (174 + (getProcent)) + 'deg';
+        var curDeg = (175 + (getProcent)) + 'deg';
         scope.curAudio.style = 'background: linear-gradient(' + curDeg + ', #33272e ' + getProcent + '%, #edb159 ' + (getProcent + 0.5) + '%);';
       }
 
@@ -427,7 +458,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         });
       }
 
-      function goToFewSeconds(type) {
+      function goToFewSeconds(type, time) {
         if (_.isEmpty(currentAudio)) {
           return false
         }
@@ -437,6 +468,9 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         }
         if (type === 'back') {
           currentAudio.setTime(curTime - 5);
+        }
+        if (type === 'set') {
+          currentAudio.setTime(time);
         }
       }
 
