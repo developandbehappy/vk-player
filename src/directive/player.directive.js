@@ -264,7 +264,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         link.setAttribute('download', 'download');
         link.click();
       };
-      
+
       playerLogoWrapper.mousemove(function (e) {
         if (e.target.className === 'player-logo') {
           return false;
@@ -273,7 +273,6 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           setPosMusic(e, this);
         }
       });
-
       playerLogoWrapper.click(function (e) {
         if (e.target.className === 'player-logo') {
           return false;
