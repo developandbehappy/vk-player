@@ -453,27 +453,27 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
 
       bindButtons();
       function bindButtons() {
-        Mousetrap.bind('alt+right', function () {
+        Mousetrap.bind('ctrl+alt+right', function () {
           scope.nextPlay(true)
         });
-        Mousetrap.bind('alt+left', function () {
+        Mousetrap.bind('ctrl+alt+left', function () {
           scope.nextPlay()
         });
-        Mousetrap.bind('alt+up', function () {
+        Mousetrap.bind('ctrl+alt+up', function () {
           scope.changeVolume('up')
         });
-        Mousetrap.bind('alt+down', function () {
+        Mousetrap.bind('ctrl+alt+down', function () {
           scope.changeVolume('down')
         });
-        Mousetrap.bind('alt+space', function () {
+        Mousetrap.bind('ctrl+alt+space', function () {
           scope.pauseAndPlay();
         });
-        // Mousetrap.bind('alt+right', function () {
-        //   goToFewSeconds('forward');
-        // });
-        // Mousetrap.bind('alt+left', function () {
-        //   goToFewSeconds('back');
-        // });
+        Mousetrap.bind('alt+right', function () {
+          goToFewSeconds('forward');
+        });
+        Mousetrap.bind('alt+left', function () {
+          goToFewSeconds('back');
+        });
       }
 
       function saveAndGetDataFromLocalStorage(type) {

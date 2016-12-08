@@ -285,27 +285,7 @@ playerApp.directive('playerPopup', function ($timeout, $interval, $http) {
           }
         });
       }
-
-      function getArtistPhoto() {
-        var url = 'https://api.vk.com/method/groups.search?q=' + scope.curAudio.author + '&sort=2&count=20&access_token=' + token + '&callback=JSON_CALLBACK';
-        $http.jsonp(url).then(function (res) {
-
-          if (res.data.error || res.data.response[0] === 0) {
-            scope.curAudio.photo_author = '/images/default_avatar.jpg';
-            return false;
-          }
-          var dataWithImage = _.filter(res.data.response, function (item) {
-            return item.photo_big;
-          }).filter(function (item) {
-            return item.photo_big !== 'http://vk.com/images/community_200.png'
-          });
-          var firstRandom = _.first(_.sortBy(dataWithImage, function () {
-            return 0.5 * Math.random();
-          }));
-          scope.curAudio.photo_author = _.isEmpty(firstRandom) ? '/images/default_avatar.jpg' : firstRandom.photo_big;
-        });
-      }
-
+      
       function goToFewSeconds(type, time) {
         if (_.isEmpty(currentAudio)) {
           return false
