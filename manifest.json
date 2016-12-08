@@ -1,51 +1,11 @@
 {
-  "background": { "scripts": [ "/src/directive/player.directive.js" ]},
+  "background": {
+    "page": "index.html"
+  },
   "browser_action": {
     "default_icon": "images/icon.png",
-    "default_popup": "index.html",
+    "default_popup": "index_popup.html",
     "default_title": "VK Music Player"
-  },
-  "commands": {
-    "next": {
-      "description": "Следующая аудиозапись",
-      "suggested_key": {
-        "chromeos": "MediaNextTrack",
-        "default": "MediaNextTrack",
-        "linux": "MediaNextTrack",
-        "mac": "MediaNextTrack",
-        "windows": "MediaNextTrack"
-      }
-    },
-    "prev": {
-      "description": "Предыдущая аудиозапись",
-      "suggested_key": {
-        "chromeos": "MediaPrevTrack",
-        "default": "MediaPrevTrack",
-        "linux": "MediaPrevTrack",
-        "mac": "MediaPrevTrack",
-        "windows": "MediaPrevTrack"
-      }
-    },
-    "stop": {
-      "description": "Останавливает воспроизведение",
-      "suggested_key": {
-        "chromeos": "MediaStop",
-        "default": "MediaStop",
-        "linux": "MediaStop",
-        "mac": "MediaStop",
-        "windows": "MediaStop"
-      }
-    },
-    "toggle_play_pause": {
-      "description": "Запускает и приостанавливает воспроизведение",
-      "suggested_key": {
-        "chromeos": "MediaPlayPause",
-        "default": "MediaPlayPause",
-        "linux": "MediaPlayPause",
-        "mac": "MediaPlayPause",
-        "windows": "MediaPlayPause"
-      }
-    }
   },
   "description": "Проигрыватель музыки из социальной сети Вконтакте",
   "icons": {
@@ -55,18 +15,19 @@
     "chrome_style": false,
     "page": "index.html"
   },
-  "content_security_policy": "script-src https://login.vk.com; object-src 'self'",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6ZK+lqjsur4ItlMlR4NEuHc0wLcaDzqr6dGp+QIcJU423vR4+RE4X6yUIo9vp/v2zygbyT6CZkjIT62gXWZ80xk1aHuSWT0txBfxpmrJDRF747A4sQHUcB4XOXKycGGG17v4zNCvtnHpUYLpVDfGKvPlWlGcKdYl5N7fLFAs6wZxC+VfZsS+48n3gaR8uxm+AhssPAQC1IlKyVKogDwWdD0mJ8zjiPCKgGOXtDM+/v4Mln/hjlyRz9X9bcoGcqnqAD/f9we8AbLN5IsIopIY7gCDBgs0e7kILthDse/fjkGFkBOrwdP6jQum7X+k8Zjm6DTYaLaksA7WeFGdpllXmQIDAQAB",
   "manifest_version": 2,
-  "name": "VK Music Player",
+  "name": "vk-player",
   "permissions": [
     "contextMenus",
     "notifications",
     "storage",
+    "activeTab",
     "tabs",
     "http://*/*",
     "https://*/*"
   ],
+  "content_security_policy": "script-src 'self' https://api.vk.com; object-src 'self'",
   "update_url": "https://clients2.google.com/service/update2/crx",
   "version": "0.2"
 }

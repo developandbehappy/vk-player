@@ -91,4 +91,3 @@ var playerCore = function (id, src, volume, end) {
     player.currentTime = time;
   };
 };
-

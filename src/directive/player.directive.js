@@ -64,6 +64,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         }, 65536 + 8);
       };
 
+
       scope.randomTrack = function () {
         scope.props = _.sortBy(scope.props, function () {
           return 0.5 * Math.random();
@@ -118,20 +119,15 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       };
 
 
-      scope.mute = function () {
-        var curAudio = currentAudio;
-        var curVolume = scope.curAudio.volume;
-        if (!curAudio || curVolume == 0) {
-          return false;
-        }
-        var volume = scope.curAudio.mute;
-        if (!volume) {
-          scope.curAudio.mute = true;
-          curAudio.volume(0);
+      scope.mute = function (volume) {
+        if (Number(volume)) {
+          scope.curAudio.volume = 0;
         } else {
-          scope.curAudio.mute = false;
-          curAudio.volume(curVolume);
+          scope.curAudio.volume = 0.2;
         }
+        scope.curAudio.mute = !Number(scope.curAudio.volume);
+        scope.changeVolume();
+        rangeVolume.val(scope.curAudio.volume).change();
       };
 
 
@@ -241,20 +237,18 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       };
 
 
-      scope.loop = function () {
-        var curAudio = currentAudio;
-        if (!curAudio) {
+      scope.loop = function (type) {
+        if (!currentAudio) {
           return false
         }
-        if (scope.curAudio.loop) {
-          scope.curAudio.loop = false;
+        if (!type) {
           scope.loopStyle = 0.6;
-          curAudio.loop(false);
+          currentAudio.loop(false);
         } else {
           scope.loopStyle = 1;
-          scope.curAudio.loop = true;
-          curAudio.loop(true);
+          currentAudio.loop(true);
         }
+        scope.curAudio.loop = type;
       };
 
       scope.downloadCurAudio = function () {
@@ -265,26 +259,9 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
         link.click();
       };
 
-      playerLogoWrapper.mousemove(function (e) {
-        if (e.target.className === 'player-logo') {
-          return false;
-        }
-        if (e.which == 1) {
-          setPosMusic(e, this);
-        }
-      });
-      playerLogoWrapper.click(function (e) {
-        if (e.target.className === 'player-logo') {
-          return false;
-        }
-        setPosMusic(e, this);
-      });
-
-
-      function setPosMusic(e, self) {
-        var parentOffset = $(self).parent().offset();
-        var relY = e.pageY - parentOffset.top;
-        var relX = e.pageX - parentOffset.left;
+      function setPosMusic(x, y) {
+        var relX = x;
+        var relY = y;
         var maxPoint = 280; // 100%
         var value = relY;
         var getProcent = 100 - (value * 100) / maxPoint;
@@ -476,27 +453,27 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
 
       bindButtons();
       function bindButtons() {
-        Mousetrap.bind('ctrl+alt+right', function () {
+        Mousetrap.bind('alt+right', function () {
           scope.nextPlay(true)
         });
-        Mousetrap.bind('ctrl+alt+left', function () {
+        Mousetrap.bind('alt+left', function () {
           scope.nextPlay()
         });
-        Mousetrap.bind('ctrl+alt+up', function () {
+        Mousetrap.bind('alt+up', function () {
           scope.changeVolume('up')
         });
-        Mousetrap.bind('ctrl+alt+down', function () {
+        Mousetrap.bind('alt+down', function () {
           scope.changeVolume('down')
         });
-        Mousetrap.bind('ctrl+alt+space', function () {
+        Mousetrap.bind('alt+space', function () {
           scope.pauseAndPlay();
         });
-        Mousetrap.bind('alt+right', function () {
-          goToFewSeconds('forward');
-        });
-        Mousetrap.bind('alt+left', function () {
-          goToFewSeconds('back');
-        });
+        // Mousetrap.bind('alt+right', function () {
+        //   goToFewSeconds('forward');
+        // });
+        // Mousetrap.bind('alt+left', function () {
+        //   goToFewSeconds('back');
+        // });
       }
 
       function saveAndGetDataFromLocalStorage(type) {
@@ -508,6 +485,39 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           return localStorage.getItem('playerData')
         }
       }
+
+      // EVENTS: chrome
+
+      chrome.extension.onConnect.addListener(function (port) {
+        var listener = port.onMessage.addListener(function (msg) {
+          port.onMessage.removeListener(listener);
+          if (msg.name === 'pause and play') scope.pauseAndPlay();
+          if (msg.name === 'next play') scope.nextPlay(msg.status);
+          if (msg.name === 'get audio list') {
+            port.postMessage({
+              name: 'audio list',
+              data: scope.props
+            });
+          }
+          if (msg.name === 'start audio') scope.startAudio(msg.audio);
+          if (msg.name === 'loop') scope.loop(msg.status);
+          if (msg.name === 'mute') scope.mute(msg.mute);
+          if (msg.name === 'change volume') scope.curAudio.volume = msg.status;
+          if (msg.name === 'change pos music') setPosMusic(msg.x, msg.y);
+          if (msg.name === 'logout') scope.logout();
+          if (msg.name === 'login') scope.login();
+          scope.changeVolume();
+
+          if (msg.name === 'give me all setting') {
+            port.postMessage({
+              name: 'all setting',
+              val: scope.curAudio
+            });
+          }
+
+        });
+      });
+
 
     }
   };
