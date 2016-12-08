@@ -493,27 +493,16 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           port.onMessage.removeListener(listener);
           if (msg.name === 'pause and play') scope.pauseAndPlay();
           if (msg.name === 'next play') scope.nextPlay(msg.status);
-          if (msg.name === 'get audio list') {
-            port.postMessage({
-              name: 'audio list',
-              data: scope.props
-            });
-          }
+          if (msg.name === 'get audio list') port.postMessage({name: 'audio list', data: scope.props});
           if (msg.name === 'start audio') scope.startAudio(msg.audio);
           if (msg.name === 'loop') scope.loop(msg.status);
           if (msg.name === 'mute') scope.mute(msg.mute);
-          if (msg.name === 'change volume') scope.curAudio.volume = msg.status;
+          if (msg.name === 'change volume') scope.curAudio.volume = msg.status; scope.changeVolume();
           if (msg.name === 'change pos music') setPosMusic(msg.x, msg.y);
           if (msg.name === 'logout') scope.logout();
           if (msg.name === 'login') scope.login();
-          scope.changeVolume();
+          if (msg.name === 'give me all setting') port.postMessage({name: 'all setting', val: scope.curAudio});
 
-          if (msg.name === 'give me all setting') {
-            port.postMessage({
-              name: 'all setting',
-              val: scope.curAudio
-            });
-          }
 
         });
       });

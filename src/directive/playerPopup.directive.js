@@ -46,9 +46,7 @@ playerApp.directive('playerPopup', function ($timeout, $interval, $http) {
         }
       });
 
-      setTimeout(function () {
-        getAudio();
-      }, 200);
+      getAudio();
       playerId.css({
         'background-image': 'url(' + scope.curAudio.photo_author + ')'
       });
@@ -278,6 +276,7 @@ playerApp.directive('playerPopup', function ($timeout, $interval, $http) {
         port.onMessage.addListener(function (msg) {
           if (msg.name === 'audio list') {
             scope.props = msg.data;
+            if(!_.size(scope.props)) getAudio();
             scope.auth = true;
             $timeout(function () {
               init();
