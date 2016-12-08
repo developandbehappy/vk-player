@@ -285,7 +285,7 @@ playerApp.directive('playerPopup', function ($timeout, $interval, $http) {
           }
         });
       }
-      
+
       function goToFewSeconds(type, time) {
         if (_.isEmpty(currentAudio)) {
           return false
@@ -300,31 +300,6 @@ playerApp.directive('playerPopup', function ($timeout, $interval, $http) {
         if (type === 'set') {
           currentAudio.setTime(time);
         }
-      }
-
-      bindButtons();
-      function bindButtons() {
-        Mousetrap.bind('ctrl+alt+right', function () {
-          scope.nextPlay(true)
-        });
-        Mousetrap.bind('ctrl+alt+left', function () {
-          scope.nextPlay()
-        });
-        Mousetrap.bind('ctrl+alt+up', function () {
-          scope.changeVolume('up')
-        });
-        Mousetrap.bind('ctrl+alt+down', function () {
-          scope.changeVolume('down')
-        });
-        Mousetrap.bind('ctrl+alt+space', function () {
-          scope.pauseAndPlay();
-        });
-        Mousetrap.bind('alt+right', function () {
-          goToFewSeconds('forward');
-        });
-        Mousetrap.bind('alt+left', function () {
-          goToFewSeconds('back');
-        });
       }
 
       function saveAndGetDataFromLocalStorage(type) {
