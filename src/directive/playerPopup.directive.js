@@ -279,6 +279,7 @@ playerApp.directive('playerPopup', function ($timeout, $interval, $http) {
             scope.$apply();
             if (!_.size(scope.props)) {
               scope.login();
+              console.log('111111111', 111111111);
               getAudio();
               return false;
             }
