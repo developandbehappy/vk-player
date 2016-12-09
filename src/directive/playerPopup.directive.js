@@ -65,6 +65,7 @@ playerApp.directive('playerPopup', function ($timeout, $interval, $http) {
         port.onMessage.addListener(function (msg) {
           if (msg.name === 'login get data') {
             scope.props = msg.data;
+            scope.auth = true;
             scope.$apply();
           }
         });
