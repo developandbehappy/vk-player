@@ -37,7 +37,7 @@ playerApp.directive('playerPopup', function ($timeout, $interval, $http) {
 
       setInterval(function () {
         port.postMessage({name: "give me all setting"});
-      }, 50);
+      }, 300);
       port.onMessage.addListener(function (msg) {
         if (msg.name === 'all setting') {
           scope.curAudio = msg.val;
@@ -276,7 +276,10 @@ playerApp.directive('playerPopup', function ($timeout, $interval, $http) {
         port.onMessage.addListener(function (msg) {
           if (msg.name === 'audio list') {
             scope.props = msg.data;
-            if(!_.size(scope.props)) getAudio();
+            if(!_.size(scope.props)) {
+              getAudio();
+              scope.login()
+            }
             scope.auth = true;
             $timeout(function () {
               init();
