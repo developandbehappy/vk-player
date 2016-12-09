@@ -500,10 +500,8 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
           if (msg.name === 'change volume') scope.curAudio.volume = msg.status; scope.changeVolume();
           if (msg.name === 'change pos music') setPosMusic(msg.x, msg.y);
           if (msg.name === 'logout') scope.logout();
-          if (msg.name === 'login') scope.login();
+          if (msg.name === 'login') scope.login(); port.postMessage({name: 'login get data', data: scope.props});
           if (msg.name === 'give me all setting') port.postMessage({name: 'all setting', val: scope.curAudio});
-
-
         });
       });
 
