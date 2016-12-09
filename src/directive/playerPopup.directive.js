@@ -68,6 +68,14 @@ playerApp.directive('playerPopup', function ($timeout, $interval, $http) {
             scope.auth = true;
             scope.$apply();
             // init();
+            setTimeout(function () {
+              var nano = $(".nano");
+              nano.nanoScroller({
+                sliderMaxHeight: 10,
+                alwaysVisible: true
+              });
+              nano.nanoScroller();
+            }, 300);
           }
         });
       };
