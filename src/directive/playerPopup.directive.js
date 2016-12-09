@@ -67,9 +67,7 @@ playerApp.directive('playerPopup', function ($timeout, $interval, $http) {
             scope.props = msg.data;
             scope.auth = true;
             scope.$apply();
-            $timeout(function () {
-              init();
-            }, 100);
+            init();
           }
         });
       };
