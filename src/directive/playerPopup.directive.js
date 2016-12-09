@@ -63,6 +63,7 @@ playerApp.directive('playerPopup', function ($timeout, $interval, $http) {
       scope.login = function () {
         port.postMessage({name: "login"});
         getAudio();
+        getAudio();
       };
 
       scope.randomTrack = function () {
