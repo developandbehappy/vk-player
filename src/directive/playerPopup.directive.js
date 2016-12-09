@@ -276,7 +276,7 @@ playerApp.directive('playerPopup', function ($timeout, $interval, $http) {
         port.onMessage.addListener(function (msg) {
           if (msg.name === 'audio list') {
             scope.props = msg.data;
-            scope.auth = true;
+            if (_.size(scope.props)) scope.auth = true;
             scope.$apply();
             $timeout(function () {
               init();
