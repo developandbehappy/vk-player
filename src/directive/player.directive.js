@@ -53,6 +53,7 @@ playerApp.directive('player', function ($timeout, $interval, $http) {
       };
 
       scope.login = function () {
+        console.log('111111111', 111111111);
         VK.Auth.login(function (res) {
           if (res.session) {
             localStorage.setItem('playerToken', res.session.sid);
